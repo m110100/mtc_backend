@@ -23,4 +23,12 @@ public class EmployeeType implements Serializable {
 
     @OneToMany(mappedBy = "employeeType", fetch = FetchType.LAZY)
     private List<LocationEmployeeTypeRestriction> locationEmployeeTypeRestrictions;
+
+    @ManyToMany
+    @JoinTable(
+            name = "employees_types",
+            joinColumns = {@JoinColumn(name = "employee_type_id")},
+            inverseJoinColumns = {@JoinColumn(name = "employee_id")}
+    )
+    private List<User> users;
 }

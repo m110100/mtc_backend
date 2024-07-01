@@ -35,4 +35,10 @@ public class Event implements Serializable {
 
     @OneToMany(mappedBy = "event", fetch = FetchType.LAZY)
     private List<EventStage> stages;
+
+    @OneToMany(mappedBy = "event", fetch = FetchType.LAZY)
+    private List<ScheduleSlot> scheduleSlots;
+
+    @OneToMany(mappedBy = "event", fetch = FetchType.LAZY)
+    private List<EventApplication> eventApplications;
 }

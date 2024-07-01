@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.io.Serializable;
+import java.util.List;
 
 @Getter
 @Setter
@@ -26,4 +27,7 @@ public class Location implements Serializable {
     @ManyToOne
     @JoinColumn(name = "location_type_id", referencedColumnName = "id", nullable = false)
     private LocationType type;
+
+    @OneToMany(mappedBy = "location", fetch = FetchType.LAZY)
+    private List<SlotLocation> slotLocations;
 }

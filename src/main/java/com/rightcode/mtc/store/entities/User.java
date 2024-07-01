@@ -22,7 +22,7 @@ public class User implements Serializable {
     @Column(name = "username", length = 30, nullable = false)
     private String username;
 
-    @Column(name = "password", length = 20, nullable = false)
+    @Column(name = "password", nullable = false)
     private String password;
 
     @Column(name = "surname", length = 30,nullable = false)
@@ -31,7 +31,7 @@ public class User implements Serializable {
     @Column(name = "name", length = 30, nullable = false)
     private String name;
 
-    @Column(name = "patronymic", length = 30, nullable = false)
+    @Column(name = "patronymic", length = 30, nullable = true)
     private String patronymic;
 
     @Column(name = "phone", length = 18, nullable = false)
@@ -61,4 +61,16 @@ public class User implements Serializable {
 
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     private List<Token> tokens;
+
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    private List<EventApplication> eventApplications;
+
+    @ManyToMany(mappedBy = "users", fetch = FetchType.LAZY)
+    private List<SlotLocation> slotLocations;
+
+    @ManyToMany(mappedBy = "users", fetch = FetchType.LAZY)
+    private List<ScheduleSlot> scheduleSlots;
+
+    @ManyToMany(mappedBy = "users", fetch = FetchType.LAZY)
+    private List<EmployeeType> employeeTypes;
 }

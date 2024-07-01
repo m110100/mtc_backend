@@ -1,0 +1,33 @@
+server:
+  port: 8080
+
+spring:
+  datasource:
+    driver-class-name: org.postgresql.Driver
+#    url: jdbc:postgresql://178.141.253.196:5432/mtc_db
+    url: jdbc:postgresql://localhost:5432/mtc_db
+    username: postgres
+#    password: 1
+    password: root
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    show-sql: false
+    hibernate:
+      ddl-auto: update
+  liquibase:
+    change-log: classpath:db/changelog/changelog-master.xml
+
+springdoc:
+  api-docs:
+    path: /api-docs
+  swagger-ui:
+    path: /swagger-ui.html
+    enabled: true
+
+cors:
+  allowedOrigins: "http://178.141.253.196:4220, http://localhost:4200/"
+  allowedMethods: "GET, PUT, PATCH, POST, DELETE, OPTIONS"
+  allowedHeaders: "*"
+  allowedCredentials: true
+  corsConfiguration: "/*"
+  maxAge: 3600

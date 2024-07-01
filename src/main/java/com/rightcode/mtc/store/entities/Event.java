@@ -37,8 +37,8 @@ public class Event implements Serializable {
     private List<EventStage> stages;
 
     @OneToMany(mappedBy = "event", fetch = FetchType.LAZY)
-    private List<ScheduleSlot> scheduleSlots;
+    private List<ScheduleSlot> slots;
 
     @OneToMany(mappedBy = "event", fetch = FetchType.LAZY)
-    private List<EventApplication> eventApplications;
+    private List<EventApplication> applications;
 }

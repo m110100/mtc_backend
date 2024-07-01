@@ -33,17 +33,16 @@ public class ScheduleSlot implements Serializable {
     @Builder.Default
     private Boolean draft = true;
 
-    //Связи
     @ManyToOne
     @JoinColumn(name = "event_stage_id", referencedColumnName = "id", nullable = false)
-    private EventStage eventStage;
+    private EventStage stage;
 
     @ManyToOne
     @JoinColumn(name = "event_id", referencedColumnName = "id", nullable = false)
     private Event event;
 
     @OneToMany(mappedBy = "scheduleSlot", fetch = FetchType.LAZY)
-    private List<SlotLocation> slotLocations;
+    private List<SlotLocation> locations;
 
     @ManyToMany
     @JoinTable(
@@ -51,8 +50,8 @@ public class ScheduleSlot implements Serializable {
             joinColumns = {@JoinColumn(name = "schedule_slot_id")},
             inverseJoinColumns = {@JoinColumn(name = "employee_id")}
     )
-    private List<User> users;
+    private List<User> employees;
 
     @ManyToMany(mappedBy = "scheduleSlots", fetch = FetchType.LAZY)
-    private List<EventApplication> eventApplications;
+    private List<EventApplication> applications;
 }

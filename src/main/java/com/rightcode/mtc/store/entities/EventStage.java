@@ -36,5 +36,5 @@ public class EventStage implements Serializable {
     private List<EventStageLocationRestriction> eventStageLocationRestrictions;
 
     @OneToMany(mappedBy = "eventStage", fetch = FetchType.LAZY)
-    private List<ScheduleSlot> scheduleSlots;
+    private List<ScheduleSlot> slots;
 }

@@ -29,5 +29,5 @@ public class Location implements Serializable {
     private LocationType type;
 
     @OneToMany(mappedBy = "location", fetch = FetchType.LAZY)
-    private List<SlotLocation> slotLocations;
+    private List<SlotLocation> locations;
 }

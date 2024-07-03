@@ -13,7 +13,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "event_application")
+@Table(name = "event_applications")
 public class EventApplication {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -37,7 +37,7 @@ public class EventApplication {
 
     @ManyToMany
     @JoinTable(
-            name = "schedule_slot_member",
+            name = "schedule_slot_members",
             joinColumns = {@JoinColumn(name = "event_application_id")},
             inverseJoinColumns = {@JoinColumn(name = "schedule_slot_id")}
     )

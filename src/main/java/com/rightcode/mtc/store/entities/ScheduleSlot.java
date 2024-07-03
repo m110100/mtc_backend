@@ -14,7 +14,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "schedule_slot")
+@Table(name = "schedule_slots")
 public class ScheduleSlot implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

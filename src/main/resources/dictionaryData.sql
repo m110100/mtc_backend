@@ -55,5 +55,20 @@ insert into event_stage_location_restrictions (id, location_number, event_stage_
 (8, 1, 7, 3),
 (9, 4, 8, 2),
 (10, 1, 9, 1);
-insert into location_employee_type_restrictions (employee_number, employee_type_id, location_type_id) VALUES
-
+insert into location_employee_type_restrictions (employee_number, employee_type_id, event_stage_location_restriction) VALUES
+(1, 1, 1),
+(1, 2, 1),
+(1, 1, 2),
+(1, 2, 2),
+(2, 3, 3),
+(2, 3, 4),
+(1, 3, 5),
+(1, 2, 6),
+(1, 3, 6),
+(1, 1, 7),
+(1, 2, 7),
+(1, 3, 8),
+(1, 2, 9),
+(1, 3, 9),
+(1, 1, 10),
+(1, 2, 10);

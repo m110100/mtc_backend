@@ -3,6 +3,8 @@ package com.rightcode.mtc.store.entities;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.List;
+
 @Getter
 @Setter
 @Builder
@@ -25,4 +27,7 @@ public class EventStageLocationRestriction {
     @ManyToOne
     @JoinColumn(name = "location_type_id", referencedColumnName = "id", nullable = false)
     private LocationType type;
+
+    @OneToMany(mappedBy = "eventStageLocationRestriction", fetch = FetchType.LAZY)
+    private List<LocationEmployeeTypeRestriction> locationEmployeeTypeRestrictions;
 }

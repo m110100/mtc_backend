@@ -23,6 +23,6 @@ public class LocationEmployeeTypeRestriction {
     private EmployeeType employeeType;
 
     @ManyToOne
-    @JoinColumn(name = "location_type_id", referencedColumnName = "id", nullable = false)
-    private LocationType locationType;
+    @JoinColumn(name = "event_stage_location_restriction", referencedColumnName = "id", nullable = false)
+    private EventStageLocationRestriction eventStageLocationRestriction;
 }

@@ -27,7 +27,7 @@ public class EventStage implements Serializable {
 
     @ManyToOne
     @JoinColumn(name = "event_type_id", referencedColumnName = "id", nullable = false)
-    private Event event;
+    private EventType eventType;
 
     @OneToOne(mappedBy = "stage")
     private EventStageRestriction restriction;

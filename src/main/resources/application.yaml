@@ -7,8 +7,7 @@ spring:
 #    url: jdbc:postgresql://178.141.253.196:5432/mtc_db
     url: jdbc:postgresql://localhost:5432/mtc_db
     username: postgres
-#    password: 1
-    password: root
+    password: xcvZ3412
   jpa:
     database-platform: org.hibernate.dialect.PostgreSQLDialect
     show-sql: false

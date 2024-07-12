@@ -24,9 +24,6 @@ public class LocationType implements Serializable {
     @OneToMany(mappedBy = "type", fetch = FetchType.LAZY)
     private List<Location> locations;
 
-    @OneToMany(mappedBy = "locationType", fetch = FetchType.LAZY)
-    private List<LocationEmployeeTypeRestriction> locationEmployeeTypeRestrictions;
-
     @OneToMany(mappedBy = "type", fetch = FetchType.LAZY)
     private List<EventStageLocationRestriction> eventStageLocationRestrictions;
 }

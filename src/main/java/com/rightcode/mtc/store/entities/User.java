@@ -62,15 +62,15 @@ public class User implements Serializable {
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     private List<Token> tokens;
 
-    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "medicalWorker", fetch = FetchType.LAZY)
     private List<EventApplication> applications;
 
-    @ManyToMany(mappedBy = "users", fetch = FetchType.LAZY)
+    @ManyToMany(mappedBy = "employees", fetch = FetchType.LAZY)
     private List<SlotLocation> locations;
 
-    @ManyToMany(mappedBy = "users", fetch = FetchType.LAZY)
+    @ManyToMany(mappedBy = "employees", fetch = FetchType.LAZY)
     private List<ScheduleSlot> slots;
 
-    @ManyToMany(mappedBy = "users", fetch = FetchType.LAZY)
+    @ManyToMany(mappedBy = "employees", fetch = FetchType.LAZY)
     private List<EmployeeType> types;
 }

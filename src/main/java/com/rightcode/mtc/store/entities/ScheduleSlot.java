@@ -41,7 +41,7 @@ public class ScheduleSlot implements Serializable {
     @JoinColumn(name = "event_id", referencedColumnName = "id", nullable = false)
     private Event event;
 
-    @OneToMany(mappedBy = "scheduleSlot", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "slot", fetch = FetchType.LAZY)
     private List<SlotLocation> locations;
 
     @ManyToMany
@@ -52,6 +52,6 @@ public class ScheduleSlot implements Serializable {
     )
     private List<User> employees;
 
-    @ManyToMany(mappedBy = "scheduleSlots", fetch = FetchType.LAZY)
+    @ManyToMany(mappedBy = "slots", fetch = FetchType.LAZY)
     private List<EventApplication> applications;
 }

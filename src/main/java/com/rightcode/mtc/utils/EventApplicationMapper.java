@@ -1,7 +1,10 @@
 package com.rightcode.mtc.utils;
 
+import com.rightcode.mtc.dto.eventApplication.Applications;
+import com.rightcode.mtc.dto.eventApplication.EventApplicationListResponse;
 import com.rightcode.mtc.store.entities.EventApplication;
 import com.rightcode.mtc.dto.eventApplication.EventApplicationResponse;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -29,5 +32,31 @@ public class EventApplicationMapper implements Mapper<EventApplication, EventApp
         return dto;
     }
 
+    public EventApplicationListResponse toListDto(Page<EventApplication> page) {
+        Applications applications = new Applications(
+                page.getContent()
+                .stream()
+                .map(this::toDto)
+                .toList()
+        );
 
+        int pageSize = page.getSize();
+        int pageNumber = page.getNumber();
+        int totalPages = page.getTotalPages();
+        int totalElements = (int) page.getTotalElements();
+        boolean isFirstPage = page.isFirst();
+        boolean isLastPage = page.isLast();
+        boolean isEmptyPage = page.isEmpty();
+
+        return new EventApplicationListResponse(
+                applications,
+                pageSize,
+                pageNumber,
+                totalPages,
+                totalElements,
+                isFirstPage,
+                isLastPage,
+                isEmptyPage
+        );
+    }
 }

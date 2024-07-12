@@ -12,7 +12,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "medical_specialities")
+@Table(name = "medical_organizations")
 public class MedicalOrganization implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -30,5 +30,5 @@ public class EmployeeType implements Serializable {
             joinColumns = {@JoinColumn(name = "employee_type_id")},
             inverseJoinColumns = {@JoinColumn(name = "employee_id")}
     )
-    private List<User> users;
+    private List<User> employees;
 }

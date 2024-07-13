@@ -27,7 +27,7 @@ public class EventStage implements Serializable {
 
     @ManyToOne
     @JoinColumn(name = "event_type_id", referencedColumnName = "id", nullable = false)
-    private EventType eventType;
+    private EventType type;
 
     @OneToOne(mappedBy = "stage")
     private EventStageRestriction restriction;
@@ -35,6 +35,6 @@ public class EventStage implements Serializable {
     @OneToMany(mappedBy = "stage", fetch = FetchType.LAZY)
     private List<EventStageLocationRestriction> eventStageLocationRestrictions;
 
-    @OneToMany(mappedBy = "eventStage", fetch = FetchType.LAZY)
-    private List<ScheduleSlot> scheduleSlots;
+    @OneToMany(mappedBy = "stage", fetch = FetchType.LAZY)
+    private List<ScheduleSlot> slots;
 }

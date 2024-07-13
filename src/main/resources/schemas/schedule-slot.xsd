@@ -1,0 +1,108 @@
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns:tns="http://www.rightcode.com/mtc/schedule-slot"
+           targetNamespace="http://www.rightcode.com/mtc/schedule-slot"
+           elementFormDefault="qualified">
+    <xs:element name="getScheduleSlotRequest" type="tns:getScheduleSlotRequest"/>
+    <xs:element name="getScheduleSlotResponse" type="tns:getScheduleSlotResponse"/>
+
+    <xs:complexType name="getScheduleSlotRequest">
+        <xs:sequence>
+            <xs:element name="scheduleSlotId" type="xs:long"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="getScheduleSlotResponse">
+        <xs:sequence>
+            <xs:element name="scheduleSlot" type="tns:scheduleSlotFull"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="scheduleSlotFull">
+        <xs:sequence>
+            <xs:element name="id" type="xs:long"/>
+            <xs:element name="dop" type="xs:string"/>
+            <xs:element name="startTime" type="xs:string"/>
+            <xs:element name="endTime" type="xs:string"/>
+            <xs:element name="draft" type="xs:boolean"/>
+            <xs:element name="stage" type="tns:eventStage"/>
+            <xs:element name="event" type="tns:event"/>
+            <xs:element name="employeesWithoutLocation" type="tns:employees"/>
+            <xs:element name="slotLocations" type="tns:slotLocations"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="eventStage">
+        <xs:sequence>
+            <xs:element name="id" type="xs:long"/>
+            <xs:element name="name" type="xs:string"/>
+            <xs:element name="eventType" type="xs:string"/>
+            <xs:element name="eventCategory" type="xs:string"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="event">
+        <xs:sequence>
+            <xs:element name="id" type="xs:long"/>
+            <xs:element name="name" type="xs:string"/>
+            <xs:element name="startDate" type="xs:string"/>
+            <xs:element name="endDate" type="xs:string"/>
+            <xs:element name="eventType" type="xs:string"/>
+            <xs:element name="medicalSpeciality" type="xs:string"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="employees">
+        <xs:sequence>
+            <xs:element name="employee" type="tns:employee" minOccurs="0" maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="employee">
+        <xs:sequence>
+            <xs:element name="id" type="xs:long"/>
+            <xs:element name="username" type="xs:string"/>
+            <xs:element name="surname" type="xs:string"/>
+            <xs:element name="name" type="xs:string"/>
+            <xs:element name="patronymic" type="xs:string" minOccurs="0"/>
+            <xs:element name="phoneNumber" type="xs:string" minOccurs="0"/>
+            <xs:element name="email" type="xs:string" minOccurs="0"/>
+            <xs:element name="dob" type="xs:string"/>
+            <xs:element name="employeeTypes" type="tns:employeeTypes"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="employeeTypes">
+        <xs:sequence>
+            <xs:element name="type" type="tns:employeeType" minOccurs="0" maxOccurs="4"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="employeeType">
+        <xs:sequence>
+            <xs:element name="id" type="xs:long"/>
+            <xs:element name="name" type="xs:string"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="slotLocations">
+        <xs:sequence>
+            <xs:element name="slotLocation" type="tns:slotLocation" minOccurs="0" maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="slotLocation">
+        <xs:sequence>
+            <xs:element name="id" type="xs:long"/>
+            <xs:element name="location" type="tns:location"/>
+            <xs:element name="employees" type="tns:employees"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="location">
+        <xs:sequence>
+            <xs:element name="id" type="xs:long"/>
+            <xs:element name="number" type="xs:int"/>
+            <xs:element name="type" type="xs:string"/>
+        </xs:sequence>
+    </xs:complexType>
+</xs:schema>

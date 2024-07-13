@@ -20,7 +20,7 @@ public class SlotLocation implements Serializable {
 
     @ManyToOne
     @JoinColumn(name = "schedule_slot_id", referencedColumnName = "id", nullable = false)
-    private ScheduleSlot scheduleSlot;
+    private ScheduleSlot slot;
 
     @ManyToOne
     @JoinColumn(name = "location_id", referencedColumnName = "id", nullable = false)
@@ -32,5 +32,5 @@ public class SlotLocation implements Serializable {
             joinColumns = {@JoinColumn(name = "slot_location_id")},
             inverseJoinColumns = {@JoinColumn(name = "employee_id")}
     )
-    private List<User> users;
+    private List<User> employees;
 }

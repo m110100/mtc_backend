@@ -9,9 +9,6 @@ import java.util.List;
 
 @Repository
 public interface EventStageRepository extends JpaRepository<EventStage, Long> {
-    @Query("select es from EventStage es where es.eventType.id = :eventTypeId")
+    @Query("select es from EventStage es where es.type.id = :eventTypeId")
     List<EventStage> findByEventType(Long eventTypeId);
-
-    @Query("select es from EventStage es where es.eventType.id =:eventTypeId and es.category.id = :eventCategoryId")
-    List<EventStage> findByEventTypeAndCategory(Long eventTypeId, Long eventCategoryId);
 }

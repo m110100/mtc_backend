@@ -20,6 +20,8 @@ insert into event_stages (id, name, event_stage_category_id, event_type_id) VALU
 (9, 'Тестирование', 2, 3);
 insert into event_stage_restrictions (duration, max_per_month, max_per_week, event_stage_id) VALUES
 (120, 1, 1, 1),
+(0, 0, 0, 2),
+(0, 0, 0, 3),
 (60, 10, 4, 4),
 (60, 12, 4, 5),
 (40, 1, 1, 6),
@@ -55,7 +57,7 @@ insert into event_stage_location_restrictions (id, location_number, event_stage_
 (8, 1, 7, 3),
 (9, 4, 8, 2),
 (10, 1, 9, 1);
-insert into location_employee_type_restrictions (employee_number, employee_type_id, event_stage_location_restriction) VALUES
+insert into location_employee_type_restrictions (employee_number, employee_type_id, location_restriction_id) VALUES
 (1, 1, 1),
 (1, 2, 1),
 (1, 1, 2),

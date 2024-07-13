@@ -34,8 +34,8 @@ public class Event implements Serializable {
     private MedicalSpeciality speciality;
 
     @OneToMany(mappedBy = "event", fetch = FetchType.LAZY)
-    private List<ScheduleSlot> scheduleSlots;
+    private List<ScheduleSlot> slots;
 
     @OneToMany(mappedBy = "event", fetch = FetchType.LAZY)
-    private List<EventApplication> eventApplications;
+    private List<EventApplication> applications;
 }

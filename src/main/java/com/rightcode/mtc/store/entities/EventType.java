@@ -27,6 +27,6 @@ public class EventType implements Serializable {
     @OneToMany(mappedBy = "type", fetch = FetchType.LAZY)
     private List<Event> events;
 
-    @OneToMany(mappedBy = "eventType", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "type", fetch = FetchType.LAZY)
     private List<EventStage> stages;
 }

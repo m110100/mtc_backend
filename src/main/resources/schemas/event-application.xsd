@@ -1,0 +1,64 @@
+<xs:schema
+        xmlns:xs="http://www.w3.org/2001/XMLSchema"
+        xmlns:tns="http://www.rightcode.com/mtc/event-application"
+        targetNamespace="http://www.rightcode.com/mtc/event-application"
+        elementFormDefault="qualified">
+    <xs:element name="EventApplicationRequest" type="tns:EventApplicationRequest" />
+    <xs:element name="EventApplicationResponse" type="tns:EventApplicationResponse" />
+    <xs:element name="EventApplicationListRequest" type="tns:EventApplicationListRequest" />
+    <xs:element name="EventApplicationListResponse" type="tns:EventApplicationListResponse" />
+
+    <xs:complexType name="EventApplicationListRequest">
+        <xs:sequence>
+            <xs:element name="pageNumber" type="xs:int" />
+            <xs:element name="filterProps" type="tns:EventApplicationFilterProps" minOccurs="0" nillable="true" />
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="EventApplicationListResponse">
+        <xs:sequence>
+            <xs:element name="applications">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="application" type="tns:EventApplicationResponse" maxOccurs="10" />
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="pageSize" type="xs:int" />
+            <xs:element name="pageNumber" type="xs:int" />
+            <xs:element name="totalPages" type="xs:int" />
+            <xs:element name="totalElements" type="xs:int" />
+            <xs:element name="isFirstPage" type="xs:boolean" />
+            <xs:element name="isLastPage" type="xs:boolean" />
+            <xs:element name="isEmptyPage" type="xs:boolean" />
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="EventApplicationFilterProps">
+        <xs:sequence>
+            <xs:element name="eventId" type="xs:long" minOccurs="0" nillable="true" />
+            <xs:element name="medicalWorkerId" type="xs:long" minOccurs="0" nillable="true" />
+            <xs:element name="applicationStatus" type="xs:string" minOccurs="0" nillable="true" />
+            <xs:element name="startDos" type="xs:string" minOccurs="0" nillable="true" />
+            <xs:element name="endDos" type="xs:string" minOccurs="0" nillable="true" />
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="EventApplicationRequest">
+        <xs:sequence>
+            <xs:element name="eventId" type="xs:long"/>
+            <xs:element name="medicalWorkerId" type="xs:long"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="EventApplicationResponse">
+        <xs:sequence>
+            <xs:element name="id" type="xs:long" />
+            <xs:element name="dos" type="xs:string" />
+            <xs:element name="status" type="xs:string" />
+            <xs:element name="event" type="xs:string" />
+            <xs:element name="fullName" type="xs:string" />
+            <xs:element name="phoneNumber" type="xs:string" />
+            <xs:element name="email" type="xs:string" />
+            <xs:element name="medicalOrganization" type="xs:string" />
+            <xs:element name="medicalSpeciality" type="xs:string" />
+            <xs:element name="medicalPosition" type="xs:string" />
+        </xs:sequence>
+    </xs:complexType>
+</xs:schema>

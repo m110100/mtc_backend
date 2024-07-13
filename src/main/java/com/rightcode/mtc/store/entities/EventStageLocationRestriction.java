@@ -28,6 +28,6 @@ public class EventStageLocationRestriction {
     @JoinColumn(name = "location_type_id", referencedColumnName = "id", nullable = false)
     private LocationType type;
 
-    @OneToMany(mappedBy = "eventStageLocationRestriction", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "restriction", fetch = FetchType.LAZY)
     private List<LocationEmployeeTypeRestriction> locationEmployeeTypeRestrictions;
 }

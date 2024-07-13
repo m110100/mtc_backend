@@ -4,7 +4,9 @@ server:
 spring:
   datasource:
     driver-class-name: org.postgresql.Driver
-#    url: jdbc:postgresql://178.141.253.196:5432/mtc_db
+#    url: jdbc:postgresql://178.141.253.196:5433/mtc_db?currentSchema=mtc_sch
+#    username: mtc_user
+#    password: mtc_pass
     url: jdbc:postgresql://localhost:5432/mtc_db
     username: postgres
     password: xcvZ3412

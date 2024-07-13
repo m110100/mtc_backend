@@ -13,7 +13,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "event_application")
+@Table(name = "event_applications")
 public class EventApplication {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,9 +22,10 @@ public class EventApplication {
     @Column(name = "dos", nullable = false)
     private LocalDate dos;
 
-    @Column(name = "application_status", nullable = false)
+    @Column(name = "status", nullable = false)
     @Enumerated(EnumType.STRING)
-    private ApplicationStatus applicationStatus = ApplicationStatus.IN_PROCESSING;
+    @Builder.Default
+    private ApplicationStatus status = ApplicationStatus.IN_PROCESSING;
 
     @ManyToOne
     @JoinColumn(name = "event_id", referencedColumnName = "id", nullable = false)
@@ -32,13 +33,13 @@ public class EventApplication {
 
     @ManyToOne
     @JoinColumn(name = "medical_worker_id", referencedColumnName = "id", nullable = false)
-    private User user;
+    private User medicalWorker;
 
     @ManyToMany
     @JoinTable(
-            name = "schedule_slot_member",
+            name = "schedule_slot_members",
             joinColumns = {@JoinColumn(name = "event_application_id")},
             inverseJoinColumns = {@JoinColumn(name = "schedule_slot_id")}
     )
-    private List<ScheduleSlot> scheduleSlots;
+    private List<ScheduleSlot> slots;
 }

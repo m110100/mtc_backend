@@ -14,7 +14,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "schedule_slot")
+@Table(name = "schedule_slots")
 public class ScheduleSlot implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -33,17 +33,16 @@ public class ScheduleSlot implements Serializable {
     @Builder.Default
     private Boolean draft = true;
 
-    //Связи
     @ManyToOne
     @JoinColumn(name = "event_stage_id", referencedColumnName = "id", nullable = false)
-    private EventStage eventStage;
+    private EventStage stage;
 
     @ManyToOne
     @JoinColumn(name = "event_id", referencedColumnName = "id", nullable = false)
     private Event event;
 
-    @OneToMany(mappedBy = "scheduleSlot", fetch = FetchType.LAZY)
-    private List<SlotLocation> slotLocations;
+    @OneToMany(mappedBy = "slot", fetch = FetchType.LAZY)
+    private List<SlotLocation> locations;
 
     @ManyToMany
     @JoinTable(
@@ -51,8 +50,8 @@ public class ScheduleSlot implements Serializable {
             joinColumns = {@JoinColumn(name = "schedule_slot_id")},
             inverseJoinColumns = {@JoinColumn(name = "employee_id")}
     )
-    private List<User> users;
+    private List<User> employees;
 
-    @ManyToMany(mappedBy = "scheduleSlots", fetch = FetchType.LAZY)
-    private List<EventApplication> eventApplications;
+    @ManyToMany(mappedBy = "slots", fetch = FetchType.LAZY)
+    private List<EventApplication> applications;
 }

@@ -23,5 +23,4 @@ public class EventApplicationListRequest implements Serializable {
     private int pageNumber;
     @XmlElement(name = "filterProps", namespace = "http://www.rightcode.com/mtc/event-application", nillable = true)
     private EventApplicationFilterProps filterProps;
-
 }

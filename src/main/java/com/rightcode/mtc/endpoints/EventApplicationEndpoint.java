@@ -1,9 +1,6 @@
 package com.rightcode.mtc.endpoints;
 
-import com.rightcode.mtc.dto.eventApplication.EventApplicationListRequest;
-import com.rightcode.mtc.dto.eventApplication.EventApplicationListResponse;
-import com.rightcode.mtc.dto.eventApplication.EventApplicationRequest;
-import com.rightcode.mtc.dto.eventApplication.EventApplicationResponse;
+import com.rightcode.mtc.dto.eventApplication.*;
 import com.rightcode.mtc.services.EventApplicationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.ws.server.endpoint.annotation.Endpoint;
@@ -13,7 +10,7 @@ import org.springframework.ws.server.endpoint.annotation.ResponsePayload;
 
 @Endpoint
 @RequiredArgsConstructor
-public class AddEventApplicationEndpoint {
+public class EventApplicationEndpoint {
     private final String eventApplicationNamespace = "http://www.rightcode.com/mtc/event-application";
 
     private final EventApplicationService service;
@@ -28,5 +25,12 @@ public class AddEventApplicationEndpoint {
     @ResponsePayload
     public EventApplicationListResponse getEventApplications(@RequestPayload EventApplicationListRequest request) {
         return service.getAllApplications(request);
+    }
+
+    @PayloadRoot(namespace = eventApplicationNamespace, localPart = "EventApplicationChangeStatusRequest")
+    @ResponsePayload
+    public EventApplicationResponse changeEventApplicationStatus(
+            @RequestPayload EventApplicationChangeStatusRequest request) {
+        return service.changeEventApplicationStatus(request);
     }
 }

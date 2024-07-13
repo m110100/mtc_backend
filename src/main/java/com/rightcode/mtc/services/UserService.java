@@ -13,9 +13,11 @@ public class UserService {
     private final UserRepository repository;
 
     public User getMedicalWorkerById(Long medicalWorkerId) {
-        return repository.findById(medicalWorkerId)
-                .orElseThrow(() -> new BusinessFault(
-                        String.format("User with id: %s not found", medicalWorkerId), FaultCode.E001.name()));
+        return repository.findById(medicalWorkerId).orElseThrow(() -> new BusinessFault(
+                        String.format("User with id: %s not found", medicalWorkerId),
+                        FaultCode.E001.name()
+                )
+        );
     }
 
 }

@@ -6,6 +6,7 @@ import com.rightcode.mtc.faults.FaultCode;
 import com.rightcode.mtc.store.entities.Event;
 import com.rightcode.mtc.store.entities.EventApplication;
 import com.rightcode.mtc.store.entities.User;
+import com.rightcode.mtc.store.entities.enums.ApplicationStatus;
 import com.rightcode.mtc.store.repositories.EventApplicationRepository;
 import com.rightcode.mtc.store.repositories.specifications.EventApplicationSpecification;
 import com.rightcode.mtc.utils.EventApplicationMapper;
@@ -35,7 +36,7 @@ public class EventApplicationService {
         User medicalWorker = userService.getMedicalWorkerById(request.getMedicalWorkerId());
         Event event = eventService.getEventById(request.getEventId());
 
-        if (LocalDate.now().isAfter(event.getStartDate()) && LocalDate.now().isEqual(event.getStartDate())) {
+        if (LocalDate.now().isAfter(event.getStartDate()) || LocalDate.now().isEqual(event.getStartDate())) {
             throw new BusinessFault(
                     String.format("Event with id: %s already started", event.getId()),
                     FaultCode.E003.name()
@@ -56,43 +57,48 @@ public class EventApplicationService {
                 .medicalWorker(medicalWorker)
                 .build();
 
-        application =  repository.saveAndFlush(application);
+        application = repository.saveAndFlush(application);
 
         return mapper.toDto(application);
     }
 
     @Transactional(readOnly = true)
     public EventApplicationListResponse getAllApplications(EventApplicationListRequest request) {
-        Pageable page = PageRequest.of(request.getPageNumber(), 10);
+        Pageable pageable = PageRequest.of(request.getPageNumber(), 10);
 
         Specification<EventApplication> specificationBuilder = null;
         if (request.getFilterProps() != null) {
             specificationBuilder = specification.build(request.getFilterProps());
         }
 
-        Page<EventApplication> pageInformation = repository.findAll(specificationBuilder, page);
+        Page<EventApplication> page = repository.findAll(specificationBuilder, pageable);
 
-        List<EventApplicationResponse> applications = pageInformation.getContent()
-                .stream()
-                .map(mapper::toDto)
-                .toList();
-        int pageSize = pageInformation.getSize();
-        int pageNumber = pageInformation.getNumber();
-        int totalPages = pageInformation.getTotalPages();
-        int totalElements = (int) pageInformation.getTotalElements();
-        boolean isFirstPage = pageInformation.isFirst();
-        boolean isLastPage = pageInformation.isLast();
-        boolean isEmptyPage = pageInformation.isEmpty();
+        return mapper.toListDto(page);
+    }
 
-        return new EventApplicationListResponse(
-                new Applications(applications),
-                pageSize,
-                pageNumber,
-                totalPages,
-                totalElements,
-                isFirstPage,
-                isLastPage,
-                isEmptyPage
+    @Transactional
+    public EventApplicationResponse changeEventApplicationStatus(EventApplicationChangeStatusRequest request) {
+        EventApplication application = getEventApplicationById(request.getId());
+
+        if (application.getStatus().name().equals(request.getStatus())) {
+            throw new BusinessFault(
+                    String.format("Application already in status: %s", request.getStatus()),
+                    FaultCode.E003.name()
+            );
+        }
+
+        application.setStatus(ApplicationStatus.valueOf(request.getStatus()));
+
+        application = repository.saveAndFlush(application);
+
+        return mapper.toDto(application);
+    }
+
+    public EventApplication getEventApplicationById(Long id) {
+        return repository.findById(id).orElseThrow(() -> new BusinessFault(
+                        String.format("Application with id: %s not found", id),
+                        FaultCode.E001.name()
+                )
         );
     }
 

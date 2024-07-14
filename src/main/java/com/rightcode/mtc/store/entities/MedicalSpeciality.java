@@ -18,7 +18,7 @@ public class MedicalSpeciality implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "name", length = 30, nullable = false)
+    @Column(name = "name", length = 150, nullable = false)
     private String name;
 
     @OneToMany(mappedBy = "speciality", fetch = FetchType.LAZY)

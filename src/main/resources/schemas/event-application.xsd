@@ -7,6 +7,14 @@
     <xs:element name="EventApplicationResponse" type="tns:EventApplicationResponse" />
     <xs:element name="EventApplicationListRequest" type="tns:EventApplicationListRequest" />
     <xs:element name="EventApplicationListResponse" type="tns:EventApplicationListResponse" />
+    <xs:element name="EventApplicationChangeStatusRequest" type="tns:EventApplicationChangeStatusRequest" />
+
+    <xs:complexType name="EventApplicationChangeStatusRequest">
+        <xs:sequence>
+            <xs:element name="id" type="xs:long" />
+            <xs:element name="status" type="xs:string" />
+        </xs:sequence>
+    </xs:complexType>
 
     <xs:complexType name="EventApplicationListRequest">
         <xs:sequence>
@@ -14,6 +22,7 @@
             <xs:element name="filterProps" type="tns:EventApplicationFilterProps" minOccurs="0" nillable="true" />
         </xs:sequence>
     </xs:complexType>
+
     <xs:complexType name="EventApplicationListResponse">
         <xs:sequence>
             <xs:element name="applications">
@@ -32,6 +41,7 @@
             <xs:element name="isEmptyPage" type="xs:boolean" />
         </xs:sequence>
     </xs:complexType>
+
     <xs:complexType name="EventApplicationFilterProps">
         <xs:sequence>
             <xs:element name="eventId" type="xs:long" minOccurs="0" nillable="true" />
@@ -41,12 +51,14 @@
             <xs:element name="endDos" type="xs:string" minOccurs="0" nillable="true" />
         </xs:sequence>
     </xs:complexType>
+
     <xs:complexType name="EventApplicationRequest">
         <xs:sequence>
             <xs:element name="eventId" type="xs:long"/>
             <xs:element name="medicalWorkerId" type="xs:long"/>
         </xs:sequence>
     </xs:complexType>
+
     <xs:complexType name="EventApplicationResponse">
         <xs:sequence>
             <xs:element name="id" type="xs:long" />

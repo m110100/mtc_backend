@@ -14,6 +14,9 @@ public class EventService {
 
     public Event getEventById(Long eventId) {
         return repository.findById(eventId).orElseThrow(() -> new BusinessFault(
-                String.format("Event with id: %s not found", eventId), FaultCode.E001.name()));
+                String.format("Event with id: %s not found", eventId),
+                FaultCode.E001.name()
+                )
+        );
     }
 }

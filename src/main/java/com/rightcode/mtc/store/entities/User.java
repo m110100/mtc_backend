@@ -48,11 +48,11 @@ public class User implements Serializable {
     private MedicalPosition position;
 
     @ManyToOne
-    @JoinColumn(name = "med_spec_id", referencedColumnName = "id", nullable = true)
+    @JoinColumn(name = "med_org_id", referencedColumnName = "id", nullable = true)
     private MedicalOrganization organization;
 
     @ManyToOne
-    @JoinColumn(name = "med_org_id", referencedColumnName = "id", nullable = true)
+    @JoinColumn(name = "med_spec_id", referencedColumnName = "id", nullable = true)
     private MedicalSpeciality speciality;
 
     @ManyToOne

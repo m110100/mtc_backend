@@ -18,7 +18,7 @@ public class EmployeeType implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "name", length = 15, nullable = false)
+    @Column(name = "name", unique = true, length = 15, nullable = false)
     private String name;
 
     @OneToMany(mappedBy = "employeeType", fetch = FetchType.LAZY)

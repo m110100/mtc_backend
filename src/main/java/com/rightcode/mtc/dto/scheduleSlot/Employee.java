@@ -1,12 +1,10 @@
 package com.rightcode.mtc.dto.scheduleSlot;
 
-import jakarta.xml.bind.annotation.XmlAccessType;
-import jakarta.xml.bind.annotation.XmlAccessorType;
-import jakarta.xml.bind.annotation.XmlElement;
-import jakarta.xml.bind.annotation.XmlElementWrapper;
+import jakarta.xml.bind.annotation.*;
 import lombok.*;
 
 import javax.xml.bind.annotation.XmlType;
+import java.io.Serializable;
 import java.util.List;
 
 @Getter
@@ -15,35 +13,25 @@ import java.util.List;
 @NoArgsConstructor
 @Builder
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "employee", propOrder = {
-        "id",
-        "username",
-        "surname",
-        "name",
-        "patronymic",
-        "phoneNumber",
-        "email",
-        "dob",
-        "employeeTypes"
-}, namespace = "http://www.rightcode.com/mtc/schedule-slot")
-public class Employee {
-    @XmlElement(name = "id", required = true, namespace = "http://www.rightcode.com/mtc/schedule-slot")
+@XmlType(name = "employee", namespace = "http://www.rightcode.com/mtc/schedule-slot")
+public class Employee implements Serializable {
+    @XmlElement(required = true)
     private long id;
-    @XmlElement(name = "username", required = true, namespace = "http://www.rightcode.com/mtc/schedule-slot")
+    @XmlElement(required = true)
     private String username;
-    @XmlElement(name = "surname", required = true, namespace = "http://www.rightcode.com/mtc/schedule-slot")
+    @XmlElement(required = true)
     private String surname;
-    @XmlElement(name = "name", required = true, namespace = "http://www.rightcode.com/mtc/schedule-slot")
+    @XmlElement(required = true)
     private String name;
-    @XmlElement(name = "patronymic", nillable = true, namespace = "http://www.rightcode.com/mtc/schedule-slot")
+    @XmlElement(nillable = true)
     private String patronymic;
-    @XmlElement(name = "phoneNumber", nillable = true, namespace = "http://www.rightcode.com/mtc/schedule-slot")
+    @XmlElement(nillable = true)
     private String phoneNumber;
-    @XmlElement(name = "email", nillable = true, namespace = "http://www.rightcode.com/mtc/schedule-slot")
+    @XmlElement(nillable = true)
     private String email;
-    @XmlElement(name = "dob", required = true, namespace = "http://www.rightcode.com/mtc/schedule-slot")
+    @XmlElement(required = true)
     private String dob;
-    @XmlElementWrapper(name = "employeeTypes", required = true, namespace = "http://www.rightcode.com/mtc/schedule-slot")
-    @XmlElement(name = "type", required = true, namespace = "http://www.rightcode.com/mtc/schedule-slot")
+    @XmlElementWrapper(required = true)
+    @XmlElement(required = true, name = "type")
     private List<EmployeeType> employeeTypes;
 }

@@ -20,7 +20,7 @@ class ScheduleSlotServiceTest {
     private ScheduleSlotService scheduleSlotService;
     @Test
     void addScheduleSlotsIntegratedTest(){
-        Long eventId = 3L;
+        Long eventId = 2L;
 
         List<ScheduleSlot> actual = scheduleSlotService.addScheduleSlots(eventId);
         for(ScheduleSlot scheduleSlot: actual){

@@ -1,5 +1,7 @@
 package com.rightcode.mtc.services;
 
+import com.rightcode.mtc.faults.BusinessFault;
+import com.rightcode.mtc.faults.FaultCode;
 import com.rightcode.mtc.store.entities.*;
 import com.rightcode.mtc.store.repositories.*;
 import lombok.NonNull;
@@ -26,16 +28,28 @@ public class ScheduleSlotService {
     private final LocationEmployeeTypeRestrictionRepository locationEmployeeTypeRestrictionRepository;
     private final ScheduleSlotRepository scheduleSlotRepository;
     private final SlotLocationRepository slotLocationRepository;
+    private final EmployeeTypeRepository employeeTypeRepository;
 
     //Протестированно
     //Возвращает объект слота со списком кураторов, и списком локаций и сотрудников в них
     public ScheduleSlot getScheduleSlotInformation(@NonNull Long scheduleSlotId){
         ScheduleSlot scheduleSlot = scheduleSlotRepository.findById(scheduleSlotId)
-                .orElseThrow(() -> new RuntimeException("There is no such Schedule Slot with id: " + scheduleSlotId));
-        scheduleSlot.setEmployees(userRepository.findByScheduleSlot(scheduleSlotId));
+                .orElseThrow(() -> new BusinessFault(
+                        String.format("There is no schedule slot with id %s", scheduleSlotId),
+                        FaultCode.E001.name()
+                ));
+        List<User> employeesWithoutLocation = userRepository.findByScheduleSlot(scheduleSlotId);
+        employeesWithoutLocation.forEach(e -> {
+            e.setTypes(employeeTypeRepository.findByEmployee(e.getId()));
+        });
+        scheduleSlot.setEmployees(employeesWithoutLocation);
         List<SlotLocation> slotLocations = slotLocationRepository.findByScheduleSlot(scheduleSlotId);
         slotLocations.forEach(sl -> {
-            sl.setEmployees(userRepository.findBySlotLocation(sl.getId()));
+            List<User> locationEmployees = userRepository.findBySlotLocation(sl.getId());
+            locationEmployees.forEach(e -> {
+                e.setTypes(employeeTypeRepository.findByEmployee(e.getId()));
+            });
+            sl.setEmployees(locationEmployees);
         });
         scheduleSlot.setLocations(slotLocations);
         return scheduleSlot;
@@ -50,7 +64,10 @@ public class ScheduleSlotService {
                         slot.getStartTime(),
                         slot.getEndTime()
                 ).stream().noneMatch(u -> Objects.equals(u.getId(), employee.getId()))){
-                    throw new RuntimeException("Employee " + employee.getUsername() + " isn't free at this period");
+                    throw new BusinessFault(
+                            String.format("Employee with id %s isn't free at this period", employee.getId()),
+                            FaultCode.E003.name()
+                    );
                 }
             }
             for(SlotLocation slotLocation: slot.getLocations()){
@@ -59,7 +76,10 @@ public class ScheduleSlotService {
                         slot.getStartTime(),
                         slot.getEndTime()
                 ).stream().noneMatch(l -> Objects.equals(l.getId(), slotLocation.getLocation().getId()))){
-                    throw new RuntimeException("Location " + slotLocation.getLocation().getNumber() + " isn't free at this period");
+                    throw new BusinessFault(
+                            String.format("location with id %s isn't free at this period", slotLocation.getLocation().getId()),
+                            FaultCode.E003.name()
+                    );
                 }
                 for (User employee: slotLocation.getEmployees()){
                     if(userRepository.findEmployeeByPeriod(
@@ -67,7 +87,10 @@ public class ScheduleSlotService {
                             slot.getStartTime(),
                             slot.getEndTime()
                     ).stream().noneMatch(u -> Objects.equals(u.getId(), employee.getId()))){
-                        throw new RuntimeException("Employee " + employee.getUsername() + " isn't free at this period");
+                        throw new BusinessFault(
+                                String.format("Employee with id %s isn't free at this period", employee.getId()),
+                                FaultCode.E003.name()
+                        );
                     }
                 }
             }
@@ -77,10 +100,18 @@ public class ScheduleSlotService {
     }
 
     public List<ScheduleSlot> addScheduleSlots(@NonNull Long eventId){
-        List<ScheduleSlot> scheduleSlots = new ArrayList<>();
         Event event = eventRepository.findById(eventId)
-                .orElseThrow(() -> new RuntimeException("There is no event with id: " + eventId));
-
+                .orElseThrow(() -> new BusinessFault(
+                        String.format("There is no event with id %s", eventId),
+                        FaultCode.E001.name()
+                ));
+        List<ScheduleSlot> scheduleSlots = scheduleSlotRepository.findByEventId(eventId);
+        if(!scheduleSlots.isEmpty()){
+            throw new BusinessFault(
+                    String.format("There are exists schedule slots for the event with id %s", eventId),
+                    FaultCode.E002.name()
+            );
+        }
         List<LocalDate> eventDays = getEventDays(event);
 
         //Ещё одно обобщение:
@@ -206,7 +237,7 @@ public class ScheduleSlotService {
                 .locations(slotLocations)
                 .employees(employees)
                 .build();
-//        scheduleSlot = scheduleSlotRepository.saveAndFlush(scheduleSlot);
+        scheduleSlot = scheduleSlotRepository.saveAndFlush(scheduleSlot);
         return scheduleSlot;
     }
 

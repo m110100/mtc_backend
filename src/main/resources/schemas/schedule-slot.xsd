@@ -17,6 +17,29 @@
         </xs:sequence>
     </xs:complexType>
 
+    <xs:element name="changeScheduleSlotStatusRequest" type="tns:changeScheduleSlotStatusRequest"/>
+    <xs:element name="changeScheduleSlotStatusResponse" type="tns:changeScheduleSlotStatusResponse"/>
+
+    <xs:complexType name="changeScheduleSlotStatusRequest">
+        <xs:sequence>
+            <xs:element name="scheduleSlotId" type="xs:long"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="changeScheduleSlotStatusResponse">
+        <xs:sequence>
+            <xs:element name="scheduleSlot" type="tns:scheduleSlotFull"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:element name="addScheduleSlotRequest" type="tns:addScheduleSlotRequest"/>
+
+    <xs:complexType name="addScheduleSlotRequest">
+        <xs:sequence>
+            <xs:element name="eventId" type="xs:long"/>
+        </xs:sequence>
+    </xs:complexType>
+
     <xs:complexType name="scheduleSlotFull">
         <xs:sequence>
             <xs:element name="id" type="xs:long"/>
@@ -43,7 +66,6 @@
     <xs:complexType name="event">
         <xs:sequence>
             <xs:element name="id" type="xs:long"/>
-            <xs:element name="name" type="xs:string"/>
             <xs:element name="startDate" type="xs:string"/>
             <xs:element name="endDate" type="xs:string"/>
             <xs:element name="eventType" type="xs:string"/>

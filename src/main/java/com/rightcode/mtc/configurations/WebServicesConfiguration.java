@@ -38,8 +38,25 @@ public class WebServicesConfiguration {
         return wsdlDefinition;
     }
 
+    @Bean(name = "scheduleSlot")
+    public DefaultWsdl11Definition scheduleSlotWsdl11Definition(XsdSchema scheduleSlotSchema) {
+        DefaultWsdl11Definition wsdl11Definition = new DefaultWsdl11Definition();
+
+        wsdl11Definition.setPortTypeName("ScheduleSlotPort");
+        wsdl11Definition.setLocationUri("/ws/");
+        wsdl11Definition.setTargetNamespace("http://www.rightcode.com/mtc/schedule-slot");
+        wsdl11Definition.setSchema(scheduleSlotSchema);
+
+        return wsdl11Definition;
+    }
+
     @Bean(name = "eventApplicationSchema")
     public XsdSchema eventApplicationSchema() {
         return new SimpleXsdSchema(new ClassPathResource("schemas/event-application.xsd"));
+    }
+
+    @Bean(name = "scheduleSlotSchema")
+    public XsdSchema scheduleSlotSchema() {
+        return new SimpleXsdSchema(new ClassPathResource("schemas/schedule-slot.xsd"));
     }
 }

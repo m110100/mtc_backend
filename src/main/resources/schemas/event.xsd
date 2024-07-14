@@ -1,0 +1,16 @@
+<xs:schema
+        xmlns:xs="http://www.w3.org/2001/XMLSchema"
+        xmlns:tns="http://www.rightcode.com/mtc/event"
+        targetNamespace="http://www.rightcode.com/mtc/event"
+        elementFormDefault="qualified">
+    <xs:element name="EventRequest" type="tns:EventRequest" />
+
+    <xs:complexType name="EventRequest">
+        <xs:sequence>
+            <xs:element name="eventTypeId" type="xs:long" />
+            <xs:element name="medicalSpecialityId" type="xs:long" />
+            <xs:element name="startDate" type="xs:string" />
+            <xs:element name="endDate" type="xs:string" />
+        </xs:sequence>
+    </xs:complexType>
+</xs:schema>

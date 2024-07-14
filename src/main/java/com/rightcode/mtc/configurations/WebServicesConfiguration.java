@@ -38,8 +38,25 @@ public class WebServicesConfiguration {
         return wsdlDefinition;
     }
 
+    @Bean(name = "event")
+    public DefaultWsdl11Definition eventWsdlDefinition(XsdSchema eventSchema) {
+        DefaultWsdl11Definition wsdlDefinition = new DefaultWsdl11Definition();
+
+        wsdlDefinition.setPortTypeName("EventPort");
+        wsdlDefinition.setLocationUri("/ws/");
+        wsdlDefinition.setTargetNamespace("http://www.rightcode.com/mtc/event");
+        wsdlDefinition.setSchema(eventSchema);
+
+        return wsdlDefinition;
+    }
+
     @Bean(name = "eventApplicationSchema")
     public XsdSchema eventApplicationSchema() {
         return new SimpleXsdSchema(new ClassPathResource("schemas/event-application.xsd"));
+    }
+
+    @Bean(name = "eventSchema")
+    public XsdSchema eventSchema() {
+        return new SimpleXsdSchema(new ClassPathResource("schemas/event.xsd"));
     }
 }

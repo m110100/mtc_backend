@@ -1,13 +1,21 @@
 package com.rightcode.mtc.services;
 
+import com.rightcode.mtc.dto.event.EventListResponse;
 import com.rightcode.mtc.dto.event.EventRequest;
+import com.rightcode.mtc.dto.event.SettingsEventRequest;
 import com.rightcode.mtc.faults.BusinessFault;
 import com.rightcode.mtc.faults.FaultCode;
 import com.rightcode.mtc.store.entities.Event;
 import com.rightcode.mtc.store.entities.EventType;
 import com.rightcode.mtc.store.entities.MedicalSpeciality;
 import com.rightcode.mtc.store.repositories.EventRepository;
+import com.rightcode.mtc.store.repositories.specifications.EventSpecification;
+import com.rightcode.mtc.utils.EventMapper;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -19,6 +27,8 @@ public class EventService {
     private final EventRepository repository;
     private final EventTypeService eventTypeService;
     private final MedicalSpecialityService medicalSpecialityService;
+    private final EventSpecification specification;
+    private final EventMapper eventMapper;
 
     public void addEvent(EventRequest request) {
         EventType type = eventTypeService.getEventTypeById(request.getEventTypeId());
@@ -77,5 +87,18 @@ public class EventService {
         );
 
         return !overlappingEvents.isEmpty();
+    }
+
+    public EventListResponse getAllEvents(SettingsEventRequest request) {
+        Pageable pageable = PageRequest.of(request.getCursor().getLimit(), (int) request.getCursor().getAfter());
+
+        Specification<Event> specificationBuilder = null;
+        if (request.getFilter() != null) {
+            specificationBuilder = specification.build(request.getFilter());
+        }
+
+        Page<Event> page = repository.findAll(specificationBuilder, pageable);
+
+        return eventMapper.toListDto(page);
     }
 }

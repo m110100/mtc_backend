@@ -1,6 +1,8 @@
 package com.rightcode.mtc.endpoints;
 
+import com.rightcode.mtc.dto.event.EventListResponse;
 import com.rightcode.mtc.dto.event.EventRequest;
+import com.rightcode.mtc.dto.event.SettingsEventRequest;
 import com.rightcode.mtc.services.EventService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.ws.server.endpoint.annotation.Endpoint;
@@ -19,5 +21,11 @@ public class EventEndpoint {
     @ResponsePayload
     public void addEvent(@RequestPayload EventRequest request) {
         service.addEvent(request);
+    }
+
+    @PayloadRoot(namespace = eventNamespace, localPart = "SettingsEventRequest")
+    @ResponsePayload
+    public EventListResponse getEvents(@RequestPayload SettingsEventRequest request) {
+        return service.getAllEvents(request);
     }
 }

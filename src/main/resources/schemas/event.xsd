@@ -4,6 +4,7 @@
         targetNamespace="http://www.rightcode.com/mtc/event"
         elementFormDefault="qualified">
     <xs:element name="EventRequest" type="tns:EventRequest" />
+    <xs:element name="SettingsEventRequest" type="tns:SettingsEventRequest"/>
 
     <xs:complexType name="EventRequest">
         <xs:sequence>
@@ -11,6 +12,58 @@
             <xs:element name="medicalSpecialityId" type="xs:long" />
             <xs:element name="startDate" type="xs:string" />
             <xs:element name="endDate" type="xs:string" />
+        </xs:sequence>
+    </xs:complexType>
+    
+    <xs:complexType name="SettingsEventRequest">
+        <xs:sequence>
+            <xs:element name="cursor" type="tns:CursorRequest"/>
+            <xs:element name="filter" type="tns:FilterEventParticipantsRequest"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="CursorRequest">
+        <xs:sequence>
+            <xs:element name="limit" type="xs:int"/>
+            <xs:element name="after" type="xs:long"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="FilterEventParticipantsRequest">
+        <xs:sequence>
+            <xs:element name="dateFrom" type="xs:string"/>
+            <xs:element name="dateTo" type="xs:string"/>
+            <xs:element name="eventTypeId" type="xs:long"/>
+            <xs:element name="medicalSpecialityId" type="xs:long"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="EventListResponse">
+        <xs:sequence>
+            <xs:element name="events">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="event" type="tns:EventResponse" maxOccurs="10" />
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="pageSize" type="xs:int" />
+            <xs:element name="pageNumber" type="xs:int" />
+            <xs:element name="totalPages" type="xs:int" />
+            <xs:element name="totalElements" type="xs:int" />
+            <xs:element name="isFirstPage" type="xs:boolean" />
+            <xs:element name="isLastPage" type="xs:boolean" />
+            <xs:element name="isEmptyPage" type="xs:boolean" />
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="EventResponse">
+        <xs:sequence>
+            <xs:element name="id" type="xs:long" />
+            <xs:element name="startDate" type="xs:string" />
+            <xs:element name="endDate" type="xs:string" />
+            <xs:element name="type" type="xs:string" />
+            <xs:element name="speciality" type="xs:string" />
         </xs:sequence>
     </xs:complexType>
 </xs:schema>

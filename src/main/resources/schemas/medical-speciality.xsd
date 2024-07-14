@@ -1,0 +1,33 @@
+<xs:schema
+        xmlns:xs="http://www.w3.org/2001/XMLSchema"
+        xmlns:tns="http://www.rightcode.com/mtc/medical-speciality"
+        targetNamespace="http://www.rightcode.com/mtc/medical-speciality"
+        elementFormDefault="qualified">
+    <xs:element name="MedicalSpecialityListRequest" type="tns:MedicalSpecialityListRequest" />
+    <xs:element name="MedicalSpecialityListResponse" type="tns:MedicalSpecialityListResponse" />
+
+    <xs:complexType name="MedicalSpecialityListRequest">
+        <xs:sequence>
+            <xs:element name="name" type="xs:string" />
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="MedicalSpecialityListResponse">
+        <xs:sequence>
+            <xs:element name="specialities">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="speciality" type="tns:MedicalSpecialityResponse" minOccurs="0" maxOccurs="10" />
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="MedicalSpecialityResponse">
+        <xs:sequence>
+            <xs:element name="id" type="xs:long" />
+            <xs:element name="name" type="xs:string" />
+        </xs:sequence>
+    </xs:complexType>
+</xs:schema>

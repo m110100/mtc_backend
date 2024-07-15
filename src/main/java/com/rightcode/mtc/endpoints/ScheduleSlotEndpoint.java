@@ -70,6 +70,14 @@ public class ScheduleSlotEndpoint {
                 .build();
     }
 
+    @PayloadRoot(namespace = TARGET_NAMESPACE, localPart = "changeScheduleSlotDraftRequest")
+    @ResponsePayload
+    public void changeScheduleSlotDraft(
+            @RequestPayload ChangeScheduleSlotDraftRequest request
+    ){
+        service.ScheduleSlotReplace(request);
+    }
+
     private Event eventMap(com.rightcode.mtc.store.entities.Event event){
         return Event.builder()
                 .id(event.getId())

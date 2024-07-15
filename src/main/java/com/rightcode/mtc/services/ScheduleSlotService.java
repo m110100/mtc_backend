@@ -1,9 +1,13 @@
 package com.rightcode.mtc.services;
 
-import com.rightcode.mtc.dto.scheduleSlot.GetScheduleSlotListRequest;
+import com.rightcode.mtc.dto.scheduleSlot.*;
 import com.rightcode.mtc.faults.BusinessFault;
 import com.rightcode.mtc.faults.FaultCode;
 import com.rightcode.mtc.store.entities.*;
+import com.rightcode.mtc.store.entities.Event;
+import com.rightcode.mtc.store.entities.EventStage;
+import com.rightcode.mtc.store.entities.Location;
+import com.rightcode.mtc.store.entities.SlotLocation;
 import com.rightcode.mtc.store.repositories.*;
 import com.rightcode.mtc.store.repositories.specifications.ScheduleSlotSpecification;
 import lombok.NonNull;
@@ -39,6 +43,66 @@ public class ScheduleSlotService {
 
     private final ScheduleSlotSpecification specification;
 
+    @Transactional
+    public void ScheduleSlotReplace(ChangeScheduleSlotDraftRequest request){
+        ScheduleSlot slot = getScheduleSlotInformation(request.getScheduleSlotData().getId());
+        ScheduleSlotData data = request.getScheduleSlotData();
+        if(!slot.getDraft()){
+            throw new BusinessFault(
+                    String.format("Schedule slot with id %s isn't editable, you should make it draft first", slot.getId()),
+                    FaultCode.E003.name()
+            );
+        }
+        slot.setDop(LocalDate.parse(data.getDop()));
+        slot.setStartTime(LocalTime.parse(data.getStartTime()));
+        slot.setEndTime(LocalTime.parse(data.getEndTime()));
+        List<User> employeesWithoutLocation = new ArrayList<>();
+        for(Long id: data.getEmployeeWithoutLocation()){
+            //todo: проверка на куратора
+            employeesWithoutLocation.add(
+                    userRepository.findById(id).orElseThrow(() -> new BusinessFault(
+                            String.format("There is no employee with id %s", id),
+                            FaultCode.E001.name()
+                    ))
+            );
+        }
+        slot.setEmployees(employeesWithoutLocation);
+        for(SlotLocation slotLocation: slot.getLocations()){
+            SlotLocationEdit slotLocationData = data.getSlotLocations().stream()
+                    .filter(sl -> sl.getId() == slotLocation.getId())
+                    .findFirst()
+                    .orElseThrow(() -> new BusinessFault(
+                            String.format("You didn't send data of slot location with id %s", slotLocation.getId()),
+                            FaultCode.E003.name()
+                    ));
+            Location location = locationRepository.findById(slotLocationData.getLocationId())
+                    .orElseThrow(() -> new BusinessFault(
+                            String.format("There is no Location with id %s", slotLocationData.getLocationId()),
+                            FaultCode.E001.name()
+                    ));
+            if(!Objects.equals(location.getType().getId(), slotLocation.getLocation().getType().getId())){
+                throw new BusinessFault(
+                        String.format("Location of slot location with id %s don't match to old location by type", slotLocationData.getId()),
+                        FaultCode.E003.name()
+                );
+            }
+            slotLocation.setLocation(location);
+            List<User> employees = new ArrayList<>();
+            for(Long id: slotLocationData.getEmployees()){
+                User employee = userRepository.findById(id).orElseThrow(() -> new BusinessFault(
+                        String.format("There is no employee with id %s", id),
+                        FaultCode.E001.name()
+                ));
+                //todo: проверка на соответсвие типу сотрудника
+                employeesWithoutLocation.add(employee);
+            }
+            slotLocation.setEmployees(employees);
+            slotLocationRepository.save(slotLocation);
+        }
+        scheduleSlotRepository.save(slot);
+    }
+
+    @Transactional
     public Page<ScheduleSlot> getScheduleSlotList(GetScheduleSlotListRequest request){
         Pageable pageable = PageRequest.of(request.getPageNumber(), request.getMaxPageElementsCount());
 
@@ -49,6 +113,7 @@ public class ScheduleSlotService {
         return scheduleSlotRepository.findAll(query, pageable);
     }
 
+    @Transactional
     public ScheduleSlot getScheduleSlotInformation(@NonNull Long scheduleSlotId){
         ScheduleSlot scheduleSlot = scheduleSlotRepository.findById(scheduleSlotId)
                 .orElseThrow(() -> new BusinessFault(
@@ -72,6 +137,7 @@ public class ScheduleSlotService {
         return scheduleSlot;
     }
 
+    @Transactional
     public ScheduleSlot changeScheduleSlotStatus(Long id){
         ScheduleSlot slot = getScheduleSlotInformation(id);
         if(slot.getDraft()){
@@ -116,6 +182,7 @@ public class ScheduleSlotService {
         return scheduleSlotRepository.saveAndFlush(slot);
     }
 
+    @Transactional
     public List<ScheduleSlot> addScheduleSlots(@NonNull Long eventId){
         Event event = eventRepository.findById(eventId)
                 .orElseThrow(() -> new BusinessFault(

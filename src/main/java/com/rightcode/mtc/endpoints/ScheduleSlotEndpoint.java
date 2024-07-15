@@ -7,6 +7,7 @@ import com.rightcode.mtc.store.entities.ScheduleSlot;
 import com.rightcode.mtc.store.entities.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.convert.ReadingConverter;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.ws.config.annotation.EnableWs;
 import org.springframework.ws.server.endpoint.annotation.Endpoint;
@@ -47,6 +48,19 @@ public class ScheduleSlotEndpoint {
             @RequestPayload AddScheduleSlotRequest request
     ){
         service.addScheduleSlots(request.getEventId());
+    }
+
+    @PayloadRoot(namespace = TARGET_NAMESPACE, localPart = "getScheduleSlotListRequest")
+    @ResponsePayload
+    public GetScheduleSlotListResponse getScheduleSlotList(
+            @RequestPayload GetScheduleSlotListRequest request
+    ){
+        Page<ScheduleSlot> scheduleSlots = service.getScheduleSlotList(request);
+        return GetScheduleSlotListResponse.builder()
+                .scheduleSlots(scheduleSlots.stream()
+                        .map(this::scheduleSlotTrimmedMap)
+                        .toList())
+                .build();
     }
 
     private Event eventMap(com.rightcode.mtc.store.entities.Event event){
@@ -116,6 +130,18 @@ public class ScheduleSlotEndpoint {
                 .event(eventMap(slot.getEvent()))
                 .employeesWithoutLocation(slot.getEmployees().stream().map(this::employeeMap).toList())
                 .slotLocations(slot.getLocations().stream().map(this::slotLocationMap).toList())
+                .build();
+    }
+
+    private ScheduleSlotTrimmed scheduleSlotTrimmedMap(ScheduleSlot slot){
+        return ScheduleSlotTrimmed.builder()
+                .id(slot.getId())
+                .dop(slot.getDop().toString())
+                .startTime(slot.getStartTime().toString())
+                .endTime(slot.getEndTime().toString())
+                .draft(slot.getDraft())
+                .stage(eventStageMap(slot.getStage()))
+                .event(eventMap(slot.getEvent()))
                 .build();
     }
 }

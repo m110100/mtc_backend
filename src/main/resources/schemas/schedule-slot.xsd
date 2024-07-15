@@ -40,6 +40,55 @@
         </xs:sequence>
     </xs:complexType>
 
+    <xs:element name="getScheduleSlotListRequest" type="tns:getScheduleSlotListRequest"/>
+    <xs:element name="getScheduleSlotListResponse" type="tns:getScheduleSlotListResponse"/>
+    
+    <xs:complexType name="getScheduleSlotListRequest">
+        <xs:sequence>
+            <xs:element name="pageNumber" type="xs:int"/>
+            <xs:element name="maxPageElementsCount" type="xs:int"/>
+            <xs:element name="scheduleSlotFilterProperties" type="tns:scheduleSlotFilterProperties" nillable="true"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="getScheduleSlotListResponse">
+        <xs:sequence>
+            <xs:element name="scheduleSlot" type="tns:scheduleSlotTrimmed"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="scheduleSlotFilterProperties">
+        <xs:sequence>
+            <xs:element name="eventTypeId" type="xs:long" minOccurs="0"/>
+            <xs:element name="eventStageId" type="xs:long" minOccurs="0"/>
+            <xs:element name="specialityId" type="xs:long" minOccurs="0"/>
+            <xs:element name="employeeId" type="xs:long" minOccurs="0"/>
+            <xs:element name="locationTypeId" type="xs:long" minOccurs="0"/>
+            <xs:element name="locationNumber" type="xs:int" minOccurs="0"/>
+            <xs:element name="startDate" type="xs:string" minOccurs="0"/>
+            <xs:element name="endDate" type="xs:string" minOccurs="0"/>
+            <xs:element name="draft" type="xs:boolean" minOccurs="0"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="scheduleSlotsTrimmed">
+        <xs:sequence>
+            <xs:element name="scheduleSlot" type="tns:scheduleSlotTrimmed" minOccurs="0" maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
+    
+    <xs:complexType name="scheduleSlotTrimmed">
+        <xs:sequence>
+            <xs:element name="id" type="xs:long"/>
+            <xs:element name="dop" type="xs:string"/>
+            <xs:element name="startTime" type="xs:string"/>
+            <xs:element name="endTime" type="xs:string"/>
+            <xs:element name="draft" type="xs:boolean"/>
+            <xs:element name="stage" type="tns:eventStage"/>
+            <xs:element name="event" type="tns:event"/>
+        </xs:sequence>
+    </xs:complexType>
+
     <xs:complexType name="scheduleSlotFull">
         <xs:sequence>
             <xs:element name="id" type="xs:long"/>

@@ -1,12 +1,19 @@
 package com.rightcode.mtc.services;
 
+import com.rightcode.mtc.dto.scheduleSlot.GetScheduleSlotListRequest;
 import com.rightcode.mtc.faults.BusinessFault;
 import com.rightcode.mtc.faults.FaultCode;
 import com.rightcode.mtc.store.entities.*;
 import com.rightcode.mtc.store.repositories.*;
+import com.rightcode.mtc.store.repositories.specifications.ScheduleSlotSpecification;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
@@ -30,8 +37,18 @@ public class ScheduleSlotService {
     private final SlotLocationRepository slotLocationRepository;
     private final EmployeeTypeRepository employeeTypeRepository;
 
-    //Протестированно
-    //Возвращает объект слота со списком кураторов, и списком локаций и сотрудников в них
+    private final ScheduleSlotSpecification specification;
+
+    public Page<ScheduleSlot> getScheduleSlotList(GetScheduleSlotListRequest request){
+        Pageable pageable = PageRequest.of(request.getPageNumber(), request.getMaxPageElementsCount());
+
+        Specification<ScheduleSlot> query = null;
+        if(request.getScheduleSlotFilterProperties() != null){
+            query = specification.build(request.getScheduleSlotFilterProperties());
+        }
+        return scheduleSlotRepository.findAll(query, pageable);
+    }
+
     public ScheduleSlot getScheduleSlotInformation(@NonNull Long scheduleSlotId){
         ScheduleSlot scheduleSlot = scheduleSlotRepository.findById(scheduleSlotId)
                 .orElseThrow(() -> new BusinessFault(
@@ -105,13 +122,14 @@ public class ScheduleSlotService {
                         String.format("There is no event with id %s", eventId),
                         FaultCode.E001.name()
                 ));
-        List<ScheduleSlot> scheduleSlots = scheduleSlotRepository.findByEventId(eventId);
-        if(!scheduleSlots.isEmpty()){
-            throw new BusinessFault(
-                    String.format("There are exists schedule slots for the event with id %s", eventId),
-                    FaultCode.E002.name()
-            );
-        }
+        List<ScheduleSlot> scheduleSlots = new ArrayList<>();
+//        List<ScheduleSlot> scheduleSlots = scheduleSlotRepository.findByEventId(eventId);
+//        if(!scheduleSlots.isEmpty()){
+//            throw new BusinessFault(
+//                    String.format("There are exists schedule slots for the event with id %s", eventId),
+//                    FaultCode.E002.name()
+//            );
+//        }
         List<LocalDate> eventDays = getEventDays(event);
 
         //Ещё одно обобщение:
@@ -226,6 +244,7 @@ public class ScheduleSlotService {
         return scheduleSlots;
     }
 
+
     private ScheduleSlot createScheduleSlot(Event event, EventStage stage, LocalDate day, LocalTime start, LocalTime end, List<SlotLocation> slotLocations, List<User> employees){
         ScheduleSlot scheduleSlot = ScheduleSlot.builder()
                 .dop(day)
@@ -234,11 +253,14 @@ public class ScheduleSlotService {
                 .event(event)
                 .stage(stage)
                 .draft(true)
-                .locations(slotLocations)
                 .employees(employees)
                 .build();
         scheduleSlot = scheduleSlotRepository.saveAndFlush(scheduleSlot);
-        return scheduleSlot;
+        for(SlotLocation slotLocation: slotLocations){
+            slotLocation.setSlot(scheduleSlot);
+            slotLocationRepository.saveAndFlush(slotLocation);
+        }
+        return getScheduleSlotInformation(scheduleSlot.getId());
     }
 
     //Возвращает дни, в которые проводится выбранное мероприятие

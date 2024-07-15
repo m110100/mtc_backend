@@ -60,6 +60,13 @@ public class ScheduleSlotEndpoint {
                 .scheduleSlots(scheduleSlots.stream()
                         .map(this::scheduleSlotTrimmedMap)
                         .toList())
+                .pageNumber(scheduleSlots.getNumber())
+                .pageSize(scheduleSlots.getSize())
+                .totalPages(scheduleSlots.getTotalPages())
+                .totalElements((int) scheduleSlots.getTotalElements())
+                .isFirstPage(scheduleSlots.isFirst())
+                .isLastPage(scheduleSlots.isLast())
+                .isEmptyPage(scheduleSlots.isEmpty())
                 .build();
     }
 

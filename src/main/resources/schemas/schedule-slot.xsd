@@ -54,6 +54,13 @@
     <xs:complexType name="getScheduleSlotListResponse">
         <xs:sequence>
             <xs:element name="scheduleSlot" type="tns:scheduleSlotTrimmed"/>
+            <xs:element name="pageSize" type="xs:int" />
+            <xs:element name="pageNumber" type="xs:int" />
+            <xs:element name="totalPages" type="xs:int" />
+            <xs:element name="totalElements" type="xs:int" />
+            <xs:element name="isFirstPage" type="xs:boolean" />
+            <xs:element name="isLastPage" type="xs:boolean" />
+            <xs:element name="isEmptyPage" type="xs:boolean" />
         </xs:sequence>
     </xs:complexType>
 

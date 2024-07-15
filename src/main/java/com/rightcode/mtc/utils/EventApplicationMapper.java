@@ -1,11 +1,12 @@
 package com.rightcode.mtc.utils;
 
-import com.rightcode.mtc.dto.eventApplication.Applications;
 import com.rightcode.mtc.dto.eventApplication.EventApplicationListResponse;
 import com.rightcode.mtc.store.entities.EventApplication;
 import com.rightcode.mtc.dto.eventApplication.EventApplicationResponse;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
 
 @Component
 public class EventApplicationMapper implements Mapper<EventApplication, EventApplicationResponse> {
@@ -33,13 +34,10 @@ public class EventApplicationMapper implements Mapper<EventApplication, EventApp
     }
 
     public EventApplicationListResponse toListDto(Page<EventApplication> page) {
-        Applications applications = new Applications(
-                page.getContent()
+        List<EventApplicationResponse> applications = page.getContent()
                 .stream()
                 .map(this::toDto)
-                .toList()
-        );
-
+                .toList();
         int pageSize = page.getSize();
         int pageNumber = page.getNumber();
         int totalPages = page.getTotalPages();

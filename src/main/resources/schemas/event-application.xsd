@@ -19,7 +19,7 @@
     <xs:complexType name="EventApplicationListRequest">
         <xs:sequence>
             <xs:element name="pageNumber" type="xs:int" />
-            <xs:element name="filterProps" type="tns:EventApplicationFilterProps" minOccurs="0" nillable="true" />
+            <xs:element name="filterProps" type="tns:EventApplicationFilterProps" nillable="true" />
         </xs:sequence>
     </xs:complexType>
 
@@ -28,7 +28,7 @@
             <xs:element name="applications">
                 <xs:complexType>
                     <xs:sequence>
-                        <xs:element name="application" type="tns:EventApplicationResponse" maxOccurs="10" />
+                        <xs:element name="application" type="tns:EventApplicationResponse" minOccurs="0" maxOccurs="unbounded" />
                     </xs:sequence>
                 </xs:complexType>
             </xs:element>
@@ -44,11 +44,11 @@
 
     <xs:complexType name="EventApplicationFilterProps">
         <xs:sequence>
-            <xs:element name="eventId" type="xs:long" minOccurs="0" nillable="true" />
-            <xs:element name="medicalWorkerId" type="xs:long" minOccurs="0" nillable="true" />
-            <xs:element name="applicationStatus" type="xs:string" minOccurs="0" nillable="true" />
-            <xs:element name="startDos" type="xs:string" minOccurs="0" nillable="true" />
-            <xs:element name="endDos" type="xs:string" minOccurs="0" nillable="true" />
+            <xs:element name="eventId" type="xs:long" minOccurs="0" />
+            <xs:element name="medicalWorkerId" type="xs:long" minOccurs="0" />
+            <xs:element name="applicationStatus" type="xs:string" minOccurs="0" />
+            <xs:element name="startDos" type="xs:string" minOccurs="0" />
+            <xs:element name="endDos" type="xs:string" minOccurs="0" />
         </xs:sequence>
     </xs:complexType>
 

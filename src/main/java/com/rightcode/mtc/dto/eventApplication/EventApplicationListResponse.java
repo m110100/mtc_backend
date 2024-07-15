@@ -26,21 +26,22 @@ import java.util.List;
 })
 @XmlRootElement(name = "EventApplicationListResponse", namespace = "http://www.rightcode.com/mtc/event-application")
 public class EventApplicationListResponse implements Serializable {
-    @XmlElement(name = "applications")
-    private Applications applications;
-    @XmlElement(name = "pageSize")
+    @XmlElementWrapper(required = true, name = "applications", namespace = "http://www.rightcode.com/mtc/event-application")
+    @XmlElement(required = true, name = "application", namespace = "http://www.rightcode.com/mtc/event-application")
+    private List<EventApplicationResponse> applications;
+    @XmlElement(name = "pageSize", namespace = "http://www.rightcode.com/mtc/event-application")
     private int pageSize;
-    @XmlElement(name = "pageNumber")
+    @XmlElement(name = "pageNumber", namespace = "http://www.rightcode.com/mtc/event-application")
     private int pageNumber;
-    @XmlElement(name = "totalPages")
+    @XmlElement(name = "totalPages", namespace = "http://www.rightcode.com/mtc/event-application")
     private int totalPages;
-    @XmlElement(name = "totalElements")
+    @XmlElement(name = "totalElements", namespace = "http://www.rightcode.com/mtc/event-application")
     private int totalElements;
-    @XmlElement(name = "isFirstPage")
+    @XmlElement(name = "isFirstPage", namespace = "http://www.rightcode.com/mtc/event-application")
     private boolean isFirstPage;
-    @XmlElement(name = "isLastPage")
+    @XmlElement(name = "isLastPage", namespace = "http://www.rightcode.com/mtc/event-application")
     private boolean isLastPage;
-    @XmlElement(name = "isEmptyPage")
+    @XmlElement(name = "isEmptyPage", namespace = "http://www.rightcode.com/mtc/event-application")
     private boolean isEmptyPage;
 
 

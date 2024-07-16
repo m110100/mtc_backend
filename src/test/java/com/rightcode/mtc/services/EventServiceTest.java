@@ -41,47 +41,47 @@ public class EventServiceTest {
         types.add(
                 EventType.builder()
                         .id(1L)
-                        .acronym("ПА")
-                        .name("Первичная аккредитация")
+                        .acronym("пїЅпїЅ")
+                        .name("пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ")
                         .build()
         );
         types.add(
                 EventType.builder()
                         .id(2L)
-                        .acronym("ПК")
-                        .name("Повышение квалификации")
+                        .acronym("пїЅпїЅ")
+                        .name("пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ")
                         .build()
         );
         types.add(
                 EventType.builder()
                         .id(3L)
-                        .acronym("ДПО")
-                        .name("Дополнительное образование")
+                        .acronym("пїЅпїЅпїЅ")
+                        .name("пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ")
                         .build()
         );
 
         specialities.add(
             MedicalSpeciality.builder()
                     .id(22L)
-                    .name("Нейрохирургия")
+                    .name("пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ")
                     .build()
         );
         specialities.add(
                 MedicalSpeciality.builder()
                         .id(22L)
-                        .name("Нейрохирургия")
+                        .name("пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ")
                         .build()
         );
         specialities.add(
                 MedicalSpeciality.builder()
                         .id(26L)
-                        .name("Онкология")
+                        .name("пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ")
                         .build()
         );
         specialities.add(
                 MedicalSpeciality.builder()
                         .id(67L)
-                        .name("Хирургия")
+                        .name("пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ")
                         .build()
         );
     }

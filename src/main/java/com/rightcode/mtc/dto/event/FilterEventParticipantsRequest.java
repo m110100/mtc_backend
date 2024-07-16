@@ -22,12 +22,15 @@ import lombok.Setter;
 )
 @XmlRootElement(name = "FilterEventParticipantsRequest", namespace = "http://www.rightcode.com/mtc/event")
 public class FilterEventParticipantsRequest {
-    @XmlElement(name = "dateFrom", namespace = "http://www.rightcode.com/mtc/event")
+    @XmlElement(name = "dateFrom", namespace = "http://www.rightcode.com/mtc/event", nillable = true)
     private String dateFrom;
-    @XmlElement(name = "dateTo", namespace = "http://www.rightcode.com/mtc/event")
+
+    @XmlElement(name = "dateTo", namespace = "http://www.rightcode.com/mtc/event", nillable = true)
     private String dateTo;
-    @XmlElement(name = "eventTypeId", namespace = "http://www.rightcode.com/mtc/event")
-    private long eventTypeId;
-    @XmlElement(name = "medicalSpecialityId", namespace = "http://www.rightcode.com/mtc/event")
-    private long medicalSpecialityId;
+
+    @XmlElement(name = "eventTypeId", namespace = "http://www.rightcode.com/mtc/event", nillable = true)
+    private Long eventTypeId;
+
+    @XmlElement(name = "medicalSpecialityId", namespace = "http://www.rightcode.com/mtc/event", nillable = true)
+    private Long medicalSpecialityId;
 }

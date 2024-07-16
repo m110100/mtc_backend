@@ -14,19 +14,26 @@ public class EventSpecification {
         return withEventTypeId(filterProps.getEventTypeId())
                 .and(withMedicalSpecialityId(filterProps.getMedicalSpecialityId()))
                 .and(withinDateRange(
-                        filterProps.getDateFrom() != null ? LocalDate.parse(filterProps.getDateFrom()) : null,
-                        filterProps.getDateTo() != null ? LocalDate.parse(filterProps.getDateTo()) : null
+                        parsedate(filterProps.getDateFrom()),
+                        parsedate(filterProps.getDateTo())
                 ));
+    }
+
+    private LocalDate parsedate(String dateStr) {
+        if (dateStr == null || dateStr.isEmpty()) {
+            return null;
+        }
+        return LocalDate.parse(dateStr);
     }
 
     private Specification<Event> withEventTypeId(Long eventTypeId) {
         return (root, query, cb) -> eventTypeId == null ? cb.conjunction() :
-                cb.equal(root.get("eventType").get("id"), eventTypeId);
+                cb.equal(root.get("type").get("id"), eventTypeId);
     }
 
     private Specification<Event> withMedicalSpecialityId(Long medicalSpecialityId) {
         return (root, query, cb) -> medicalSpecialityId == null ? cb.conjunction() :
-                cb.equal(root.get("medicalSpeciality").get("id"), medicalSpecialityId);
+                cb.equal(root.get("speciality").get("id"), medicalSpecialityId);
     }
 
     private Specification<Event> withinDateRange(LocalDate startDate, LocalDate endDate) {
@@ -34,14 +41,14 @@ public class EventSpecification {
             if (startDate == null && endDate == null) {
                 return cb.conjunction();
             } else if (startDate != null && endDate != null) {
-                if (startDate.isEqual(endDate)) {
-                    return cb.equal(root.get("date"), startDate);
-                }
-                return cb.between(root.get("date"), startDate, endDate);
+                return cb.and(
+                        cb.greaterThanOrEqualTo(root.get("startDate"), startDate),
+                        cb.lessThanOrEqualTo(root.get("endDate"), endDate)
+                );
             } else if (startDate != null) {
-                return cb.greaterThanOrEqualTo(root.get("date"), startDate);
+                return cb.greaterThanOrEqualTo(root.get("startDate"), startDate);
             } else {
-                return cb.lessThanOrEqualTo(root.get("date"), endDate);
+                return cb.lessThanOrEqualTo(root.get("endDate"), endDate);
             }
         };
     }

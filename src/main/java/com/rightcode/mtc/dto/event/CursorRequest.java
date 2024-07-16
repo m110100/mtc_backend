@@ -20,8 +20,9 @@ import lombok.Setter;
 )
 @XmlRootElement(name = "CursorRequest", namespace = "http://www.rightcode.com/mtc/event")
 public class CursorRequest {
-    @XmlElement(name = "limit", namespace = "http://www.rightcode.com/mtc/event")
+    @XmlElement(name = "limit", namespace = "http://www.rightcode.com/mtc/event", required = true)
     private int limit;
-    @XmlElement(name = "after", namespace = "http://www.rightcode.com/mtc/event")
-    private long after;
+
+    @XmlElement(name = "after", namespace = "http://www.rightcode.com/mtc/event", nillable = true)
+    private Long after;
 }

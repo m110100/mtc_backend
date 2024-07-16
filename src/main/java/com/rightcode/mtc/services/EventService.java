@@ -2,7 +2,7 @@ package com.rightcode.mtc.services;
 
 import com.rightcode.mtc.dto.event.EventListResponse;
 import com.rightcode.mtc.dto.event.EventRequest;
-import com.rightcode.mtc.dto.event.SettingsEventRequest;
+import com.rightcode.mtc.dto.event.EventsRequest;
 import com.rightcode.mtc.faults.BusinessFault;
 import com.rightcode.mtc.faults.FaultCode;
 import com.rightcode.mtc.store.entities.Event;
@@ -89,8 +89,11 @@ public class EventService {
         return !overlappingEvents.isEmpty();
     }
 
-    public EventListResponse getAllEvents(SettingsEventRequest request) {
-        Pageable pageable = PageRequest.of(request.getCursor().getLimit(), (int) request.getCursor().getAfter());
+    public EventListResponse getAllEvents(EventsRequest request) {
+        Long after = request.getCursor().getAfter();
+        int limit = request.getCursor().getLimit();
+        int pageNumber = after != null ? Math.toIntExact(after / limit) : 0;
+        Pageable pageable = PageRequest.of(pageNumber, limit);
 
         Specification<Event> specificationBuilder = null;
         if (request.getFilter() != null) {

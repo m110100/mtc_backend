@@ -18,8 +18,8 @@ import lombok.Setter;
             "filter"
         }
 )
-@XmlRootElement(name = "SettingsEventRequest", namespace = "http://www.rightcode.com/mtc/event")
-public class SettingsEventRequest {
+@XmlRootElement(name = "EventsRequest", namespace = "http://www.rightcode.com/mtc/event")
+public class EventsRequest {
     @XmlElement(name = "cursor", namespace = "http://www.rightcode.com/mtc/event")
     private CursorRequest cursor;
     @XmlElement(name = "filter", namespace = "http://www.rightcode.com/mtc/event")

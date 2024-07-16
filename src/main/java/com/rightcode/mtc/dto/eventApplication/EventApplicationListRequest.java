@@ -15,11 +15,11 @@ import java.io.Serializable;
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "EventApplicationListRequest", propOrder = {
         "pageNumber",
-        "filterProps",
+        "filterProps"
 })
 @XmlRootElement(name = "EventApplicationListRequest", namespace = "http://www.rightcode.com/mtc/event-application")
 public class EventApplicationListRequest implements Serializable {
-    @XmlElement(name = "pageNumber", namespace = "http://www.rightcode.com/mtc/event-application")
+    @XmlElement(required = true, name = "pageNumber", namespace = "http://www.rightcode.com/mtc/event-application")
     private int pageNumber;
     @XmlElement(name = "filterProps", namespace = "http://www.rightcode.com/mtc/event-application", nillable = true)
     private EventApplicationFilterProps filterProps;

@@ -38,6 +38,18 @@ public class WebServicesConfiguration {
         return wsdlDefinition;
     }
 
+    @Bean(name = "scheduleSlot")
+    public DefaultWsdl11Definition scheduleSlotWsdl11Definition(XsdSchema scheduleSlotSchema) {
+        DefaultWsdl11Definition wsdl11Definition = new DefaultWsdl11Definition();
+
+        wsdl11Definition.setPortTypeName("ScheduleSlotPort");
+        wsdl11Definition.setLocationUri("/ws/");
+        wsdl11Definition.setTargetNamespace("http://www.rightcode.com/mtc/schedule-slot");
+        wsdl11Definition.setSchema(scheduleSlotSchema);
+
+        return wsdl11Definition;
+    }
+
     @Bean(name = "event")
     public DefaultWsdl11Definition eventWsdlDefinition(XsdSchema eventSchema) {
         DefaultWsdl11Definition wsdlDefinition = new DefaultWsdl11Definition();
@@ -74,6 +86,30 @@ public class WebServicesConfiguration {
         return wsdlDefinition;
     }
 
+    @Bean(name = "medicalOrganization")
+    public DefaultWsdl11Definition medicalOrganizationWsdlDefinition(XsdSchema medicalOrganizationSchema) {
+        DefaultWsdl11Definition wsdlDefinition = new DefaultWsdl11Definition();
+
+        wsdlDefinition.setPortTypeName("MedicalOrganizationPort");
+        wsdlDefinition.setLocationUri("/ws/");
+        wsdlDefinition.setTargetNamespace("http://www.rightcode.com/mtc/medical-organization");
+        wsdlDefinition.setSchema(medicalOrganizationSchema);
+
+        return wsdlDefinition;
+    }
+
+    @Bean(name = "medicalPosition")
+    public DefaultWsdl11Definition medicalPositionWsdlDefinition(XsdSchema medicalPositionSchema) {
+        DefaultWsdl11Definition wsdlDefinition = new DefaultWsdl11Definition();
+
+        wsdlDefinition.setPortTypeName("MedicalPositionPort");
+        wsdlDefinition.setLocationUri("/ws/");
+        wsdlDefinition.setTargetNamespace("http://www.rightcode.com/mtc/medical-position");
+        wsdlDefinition.setSchema(medicalPositionSchema);
+
+        return wsdlDefinition;
+    }
+
     @Bean(name = "user")
     public DefaultWsdl11Definition userWsdlDefinition(XsdSchema userSchema) {
         DefaultWsdl11Definition wsdlDefinition = new DefaultWsdl11Definition();
@@ -91,6 +127,11 @@ public class WebServicesConfiguration {
         return new SimpleXsdSchema(new ClassPathResource("schemas/event-application.xsd"));
     }
 
+    @Bean(name = "scheduleSlotSchema")
+    public XsdSchema scheduleSlotSchema() {
+        return new SimpleXsdSchema(new ClassPathResource("schemas/schedule-slot.xsd"));
+    }
+
     @Bean(name = "eventSchema")
     public XsdSchema eventSchema() {
         return new SimpleXsdSchema(new ClassPathResource("schemas/event.xsd"));
@@ -104,6 +145,16 @@ public class WebServicesConfiguration {
     @Bean(name = "medicalSpecialitySchema")
     public XsdSchema medicalSpecialitySchema() {
         return new SimpleXsdSchema(new ClassPathResource("schemas/medical-speciality.xsd"));
+    }
+
+    @Bean(name = "medicalPositionSchema")
+    public XsdSchema medicalPositionSchema() {
+        return new SimpleXsdSchema(new ClassPathResource("schemas/medical-position.xsd"));
+    }
+
+    @Bean(name = "medicalOrganizationSchema")
+    public XsdSchema medicalOrganizationSchema() {
+        return new SimpleXsdSchema(new ClassPathResource("schemas/medical-organization.xsd"));
     }
 
     @Bean(name = "userSchema")

@@ -13,11 +13,14 @@ import com.rightcode.mtc.store.repositories.MedicalSpecialityRepository;
 import com.rightcode.mtc.store.repositories.UserRepository;
 import com.rightcode.mtc.utils.UserMapper;
 import lombok.RequiredArgsConstructor;
+import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
+import java.time.LocalTime;
+import java.util.List;
 import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -41,6 +44,91 @@ public class UserService {
         );
     }
 
+    public User getEmployeeById(@NonNull Long employeeId){
+        User employee = repository.findById(employeeId).orElseThrow(() -> new BusinessFault(
+                String.format("There is no user with id %s", employeeId),
+                FaultCode.E001.name()
+        ));
+        if(employee.getRole().getId() != 2L){
+            throw new BusinessFault(
+                    String.format("User with id %s has not employee role", employeeId),
+                    FaultCode.E003.name()
+            );
+        }
+        return employee;
+    }
+
+    public List<User> getEmployeesByType(@NonNull Long employeeTypeId){
+        return repository.findAllEmployeeBySpeciality(employeeTypeId);
+    }
+
+    /**
+     * @param employeeTypeId
+     * id типа сотрудника
+     * @param day
+     * день которуму принадлежит период
+     * @param startTime
+     * начало периода
+     * @param endTime
+     * конец периода
+     * @return
+     * Список всех сотрудников имеющих указанный тип,
+     * которые свободны в указанный период указанного дня
+     */
+    public List<User> getFreeEmployeesByTypeAndPeriod(
+            @NonNull Long employeeTypeId,
+            @NonNull LocalDate day,
+            @NonNull LocalTime startTime,
+            @NonNull LocalTime endTime
+            ){
+        return repository.findAllFreeEmployeeByIdAndPeriod(employeeTypeId, day, startTime, endTime);
+    }
+
+    /**
+     * @param day
+     * день которуму принадлежит период
+     * @param startTime
+     * начало периода
+     * @param endTime
+     * конец периода
+     * @return
+     * Список всех сотрудников имеющих тип "куратор" или "инженер",
+     * которые свободны в указанный период указанного дня
+     */
+    public List<User> getFreeEmployeesWithoutLocation(
+            @NonNull LocalDate day,
+            @NonNull LocalTime startTime,
+            @NonNull LocalTime endTime
+    ){
+        return repository.findAllEmployeeWithoutLocation(day, startTime, endTime);
+    }
+
+    /**
+     * @param day
+     * день которуму принадлежит период
+     * @param startTime
+     * начало периода
+     * @param endTime
+     * конец периода
+     * @return
+     * Список всех сотрудников,
+     * которые свободны в указанный период указанного дня
+     */
+    public List<User> getFreeEmployeesByPeriod(
+            @NonNull LocalDate day,
+            @NonNull LocalTime startTime,
+            @NonNull LocalTime endTime
+    ){
+        return repository.findEmployeeByPeriod(day, startTime, endTime);
+    }
+
+    public List<User> getEmployeesByScheduleSlot(Long scheduleSlotId){
+        return repository.findByScheduleSlot(scheduleSlotId);
+    }
+
+    public List<User> getEmployeesBySlotLocation(Long slotLocationId){
+        return repository.findBySlotLocation(slotLocationId);
+    }
     @Transactional
     public UserResponse updateUser(UserRequest request) {
         Optional<User> userOptional = repository.findByUsername(request.getUsername());
@@ -128,5 +216,9 @@ public class UserService {
         }
 
         return mapper.toInfoDto(userOptional.get());
+    }
+
+    public List<User> getEventParticipants(Long eventId){
+        return repository.findWorkerByEvent(eventId);
     }
 }

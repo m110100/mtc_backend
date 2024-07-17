@@ -1,23 +1,23 @@
 <xs:schema
         xmlns:xs="http://www.w3.org/2001/XMLSchema"
-        xmlns:tns="http://www.rightcode.com/mtc/medical-speciality"
-        targetNamespace="http://www.rightcode.com/mtc/medical-speciality"
+        xmlns:tns="http://www.rightcode.com/mtc/medical-organization"
+        targetNamespace="http://www.rightcode.com/mtc/medical-organization"
         elementFormDefault="qualified">
-    <xs:element name="MedicalSpecialityListRequest" type="tns:MedicalSpecialityListRequest" />
-    <xs:element name="MedicalSpecialityListResponse" type="tns:MedicalSpecialityListResponse" />
+    <xs:element name="MedicalOrganizationListRequest" type="tns:MedicalOrganizationListRequest" />
+    <xs:element name="MedicalOrganizationListResponse" type="tns:MedicalOrganizationListResponse" />
 
-    <xs:complexType name="MedicalSpecialityListRequest">
+    <xs:complexType name="MedicalOrganizationListRequest">
         <xs:sequence>
             <xs:element name="name" type="xs:string" />
         </xs:sequence>
     </xs:complexType>
 
-    <xs:complexType name="MedicalSpecialityListResponse">
+    <xs:complexType name="MedicalOrganizationListResponse">
         <xs:sequence>
-            <xs:element name="specialities">
+            <xs:element name="organizations">
                 <xs:complexType>
                     <xs:sequence>
-                        <xs:element name="speciality" type="tns:MedicalSpecialityResponse" minOccurs="0" maxOccurs="10" />
+                        <xs:element name="organization" type="tns:MedicalOrganizationResponse" minOccurs="0" maxOccurs="10" />
                     </xs:sequence>
                 </xs:complexType>
             </xs:element>
@@ -25,7 +25,7 @@
         </xs:sequence>
     </xs:complexType>
 
-    <xs:complexType name="MedicalSpecialityResponse">
+    <xs:complexType name="MedicalOrganizationResponse">
         <xs:sequence>
             <xs:element name="id" type="xs:long" />
             <xs:element name="name" type="xs:string" />

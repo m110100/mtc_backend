@@ -3,6 +3,7 @@ package com.rightcode.mtc.utils;
 import com.rightcode.mtc.dto.medicalSpeciality.MedicalSpecialityListResponse;
 import com.rightcode.mtc.dto.medicalSpeciality.MedicalSpecialityResponse;
 import com.rightcode.mtc.store.entities.MedicalSpeciality;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -17,9 +18,10 @@ public class MedicalSpecialityMapper implements Mapper<MedicalSpeciality, Medica
         );
     }
 
-    public MedicalSpecialityListResponse toListDto(List<MedicalSpeciality> daoList) {
-        List<MedicalSpecialityResponse> specialities = daoList.stream().map(this::toDto).toList();
+    public MedicalSpecialityListResponse toListDto(Page<MedicalSpeciality> page) {
+        List<MedicalSpecialityResponse> specialities = page.getContent().stream().map(this::toDto).toList();
+        boolean hasNext = page.hasNext();
 
-        return new MedicalSpecialityListResponse(specialities);
+        return new MedicalSpecialityListResponse(specialities, hasNext);
     }
 }

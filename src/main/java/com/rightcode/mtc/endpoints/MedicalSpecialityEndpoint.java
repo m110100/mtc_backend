@@ -18,7 +18,7 @@ public class MedicalSpecialityEndpoint {
 
     @PayloadRoot(namespace = medicalSpecialityNamespace, localPart = "MedicalSpecialityListRequest")
     @ResponsePayload
-    public MedicalSpecialityListResponse getEventApplications(@RequestPayload MedicalSpecialityListRequest request) {
+    public MedicalSpecialityListResponse getMedicalSpecialities(@RequestPayload MedicalSpecialityListRequest request) {
         return service.getMedicalSpecialities(request);
     }
 }

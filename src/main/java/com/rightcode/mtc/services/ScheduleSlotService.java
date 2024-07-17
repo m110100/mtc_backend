@@ -30,16 +30,16 @@ import java.util.Objects;
 @Service
 @RequiredArgsConstructor
 public class ScheduleSlotService {
-    private final EventRepository eventRepository;
-    private final EventStageRepository eventStageRepository;
-    private final EventStageCategoryRepository eventStageCategoryRepository;
-    private final UserRepository userRepository;
-    private final LocationRepository locationRepository;
-    private final EventStageLocationRestrictionRepository eventStageLocationRestrictionRepository;
-    private final LocationEmployeeTypeRestrictionRepository locationEmployeeTypeRestrictionRepository;
-    private final ScheduleSlotRepository scheduleSlotRepository;
-    private final SlotLocationRepository slotLocationRepository;
-    private final EmployeeTypeRepository employeeTypeRepository;
+    private final EventService eventService;
+    private final EventStageService eventStageService;
+    private final EventStageCategoryService eventStageCategoryService;
+    private final UserService userService;
+    private final LocationService locationService;
+    private final EventStageLocationRestrictionService eventStageLocationRestrictionService;
+    private final LocationEmployeeTypeRestrictionService locationEmployeeTypeRestrictionService;
+    private final SlotLocationService slotLocationService;
+    private final EmployeeTypeService employeeTypeService;
+    private final ScheduleSlotRepository repository;
 
     private final ScheduleSlotSpecification specification;
 
@@ -58,12 +58,8 @@ public class ScheduleSlotService {
         slot.setEndTime(LocalTime.parse(data.getEndTime()));
         List<User> employeesWithoutLocation = new ArrayList<>();
         for(Long id: data.getEmployeeWithoutLocation()){
-            //todo: проверка на куратора
             employeesWithoutLocation.add(
-                    userRepository.findById(id).orElseThrow(() -> new BusinessFault(
-                            String.format("There is no employee with id %s", id),
-                            FaultCode.E001.name()
-                    ))
+                    userService.getEmployeeById(id)
             );
         }
         slot.setEmployees(employeesWithoutLocation);
@@ -75,11 +71,7 @@ public class ScheduleSlotService {
                             String.format("You didn't send data of slot location with id %s", slotLocation.getId()),
                             FaultCode.E003.name()
                     ));
-            Location location = locationRepository.findById(slotLocationData.getLocationId())
-                    .orElseThrow(() -> new BusinessFault(
-                            String.format("There is no Location with id %s", slotLocationData.getLocationId()),
-                            FaultCode.E001.name()
-                    ));
+            Location location = locationService.getById(slotLocationData.getLocationId());
             if(!Objects.equals(location.getType().getId(), slotLocation.getLocation().getType().getId())){
                 throw new BusinessFault(
                         String.format("Location of slot location with id %s don't match to old location by type", slotLocationData.getId()),
@@ -89,17 +81,12 @@ public class ScheduleSlotService {
             slotLocation.setLocation(location);
             List<User> employees = new ArrayList<>();
             for(Long id: slotLocationData.getEmployees()){
-                User employee = userRepository.findById(id).orElseThrow(() -> new BusinessFault(
-                        String.format("There is no employee with id %s", id),
-                        FaultCode.E001.name()
-                ));
-                //todo: проверка на соответсвие типу сотрудника
-                employeesWithoutLocation.add(employee);
+                employeesWithoutLocation.add(userService.getEmployeeById(id));
             }
             slotLocation.setEmployees(employees);
-            slotLocationRepository.save(slotLocation);
+            slotLocationService.save(slotLocation);
         }
-        scheduleSlotRepository.save(slot);
+        repository.save(slot);
     }
 
     @Transactional
@@ -110,26 +97,26 @@ public class ScheduleSlotService {
         if(request.getScheduleSlotFilterProperties() != null){
             query = specification.build(request.getScheduleSlotFilterProperties());
         }
-        return scheduleSlotRepository.findAll(query, pageable);
+        return repository.findAll(query, pageable);
     }
 
     @Transactional
     public ScheduleSlot getScheduleSlotInformation(@NonNull Long scheduleSlotId){
-        ScheduleSlot scheduleSlot = scheduleSlotRepository.findById(scheduleSlotId)
+        ScheduleSlot scheduleSlot = repository.findById(scheduleSlotId)
                 .orElseThrow(() -> new BusinessFault(
                         String.format("There is no schedule slot with id %s", scheduleSlotId),
                         FaultCode.E001.name()
                 ));
-        List<User> employeesWithoutLocation = userRepository.findByScheduleSlot(scheduleSlotId);
+        List<User> employeesWithoutLocation = userService.getEmployeesByScheduleSlot(scheduleSlotId);
         employeesWithoutLocation.forEach(e -> {
-            e.setTypes(employeeTypeRepository.findByEmployee(e.getId()));
+            e.setTypes(employeeTypeService.getByEmployee(e.getId()));
         });
         scheduleSlot.setEmployees(employeesWithoutLocation);
-        List<SlotLocation> slotLocations = slotLocationRepository.findByScheduleSlot(scheduleSlotId);
+        List<SlotLocation> slotLocations = slotLocationService.getByScheduleSlot(scheduleSlotId);
         slotLocations.forEach(sl -> {
-            List<User> locationEmployees = userRepository.findBySlotLocation(sl.getId());
+            List<User> locationEmployees = userService.getEmployeesBySlotLocation(sl.getId());
             locationEmployees.forEach(e -> {
-                e.setTypes(employeeTypeRepository.findByEmployee(e.getId()));
+                e.setTypes(employeeTypeService.getByEmployee(e.getId()));
             });
             sl.setEmployees(locationEmployees);
         });
@@ -142,7 +129,7 @@ public class ScheduleSlotService {
         ScheduleSlot slot = getScheduleSlotInformation(id);
         if(slot.getDraft()){
             for(User employee: slot.getEmployees()){
-                if(userRepository.findAllEmployeeWithoutLocation(
+                if(userService.getFreeEmployeesWithoutLocation(
                         slot.getDop(),
                         slot.getStartTime(),
                         slot.getEndTime()
@@ -154,7 +141,7 @@ public class ScheduleSlotService {
                 }
             }
             for(SlotLocation slotLocation: slot.getLocations()){
-                if(locationRepository.findByPeriod(
+                if(locationService.getFreeByPeriod(
                         slot.getDop(),
                         slot.getStartTime(),
                         slot.getEndTime()
@@ -165,7 +152,7 @@ public class ScheduleSlotService {
                     );
                 }
                 for (User employee: slotLocation.getEmployees()){
-                    if(userRepository.findEmployeeByPeriod(
+                    if(userService.getFreeEmployeesByPeriod(
                             slot.getDop(),
                             slot.getStartTime(),
                             slot.getEndTime()
@@ -179,36 +166,32 @@ public class ScheduleSlotService {
             }
         }
         slot.setDraft(!slot.getDraft());
-        return scheduleSlotRepository.saveAndFlush(slot);
+        return repository.saveAndFlush(slot);
     }
 
     @Transactional
     public List<ScheduleSlot> addScheduleSlots(@NonNull Long eventId){
-        Event event = eventRepository.findById(eventId)
-                .orElseThrow(() -> new BusinessFault(
-                        String.format("There is no event with id %s", eventId),
-                        FaultCode.E001.name()
-                ));
-        List<ScheduleSlot> scheduleSlots = new ArrayList<>();
-//        List<ScheduleSlot> scheduleSlots = scheduleSlotRepository.findByEventId(eventId);
-//        if(!scheduleSlots.isEmpty()){
-//            throw new BusinessFault(
-//                    String.format("There are exists schedule slots for the event with id %s", eventId),
-//                    FaultCode.E002.name()
-//            );
-//        }
+        Event event = eventService.getEventById(eventId);
+//        List<ScheduleSlot> scheduleSlots = new ArrayList<>();
+        List<ScheduleSlot> scheduleSlots = repository.findByEventId(eventId);
+        if(!scheduleSlots.isEmpty()){
+            throw new BusinessFault(
+                    String.format("There are exists schedule slots for the event with id %s", eventId),
+                    FaultCode.E002.name()
+            );
+        }
         List<LocalDate> eventDays = getEventDays(event);
 
         //Ещё одно обобщение:
         //Получаем список существующих категорий, чтобы не запрашивать по id (или прости Господи по имени)
-        List<EventStageCategory> eventStageCategories = eventStageCategoryRepository.findAll();
+        List<EventStageCategory> eventStageCategories = eventStageCategoryService.getAll();
         List<EventStage> currentCategoryStages;
 
         //Словарь для потенциального хранения регулярно изменяемых ограничений этапа
         //как то: отавшееся кол-во занятий, кол-во занятий в неделю
         HashMap<String, Integer> restrictionBuffer = new HashMap<>();
         List<SlotPair> busyPeriods = new ArrayList<>();
-        List<EventStage> eventStages = eventStageRepository.findByEventType(event.getType().getId());
+        List<EventStage> eventStages = eventStageService.getByEventType(event.getType().getId());
         for(EventStage stage: eventStages){
             Integer duration = getEventStageDuration(stage, event);
             if(stage.getCategory().getId() == 1L & stage.getRestriction().getMaxPerWeek() != null && stage.getRestriction().getMaxPerMonth() != null){
@@ -234,13 +217,11 @@ public class ScheduleSlotService {
                         busyPeriods.stream().anyMatch(b -> Objects.equals(b.day, day) && Objects.equals(b.start, startTime))){
                             continue;
                         }
-                        allEmployeeWithoutLocation = userRepository.findAllEmployeeWithoutLocation(eventDays.get(i), startTime, endTime);
+                        allEmployeeWithoutLocation = userService.getFreeEmployeesWithoutLocation(eventDays.get(i), startTime, endTime);
                         if(allEmployeeWithoutLocation.size() == 0){
                             continue;
                         }
                         employeesWithoutLocation = new ArrayList<>(List.of(allEmployeeWithoutLocation.get(0)));
-                        //Метод, возвращающий все помещения для слота с указанием сотрудников
-                        //При отсутствии необходимых помещений/сотрудников - пустой список
                         slotLocations = getSlotLocations(
                                 stage,
                                 day,
@@ -277,7 +258,7 @@ public class ScheduleSlotService {
                     for(int start = 8 * 60; start <= 20 * 60; start += 120){
                         LocalTime startTime = LocalTime.of(start/60, start%60);
                         LocalTime endTime = startTime.plusMinutes(duration);
-                        allEmployeeWithoutLocation = userRepository.findAllEmployeeWithoutLocation(eventDays.get(i), startTime, endTime);
+                        allEmployeeWithoutLocation = userService.getFreeEmployeesWithoutLocation(eventDays.get(i), startTime, endTime);
                         if(allEmployeeWithoutLocation.size() == 0){
                             continue;
                         }
@@ -322,10 +303,10 @@ public class ScheduleSlotService {
                 .draft(true)
                 .employees(employees)
                 .build();
-        scheduleSlot = scheduleSlotRepository.saveAndFlush(scheduleSlot);
+        scheduleSlot = repository.saveAndFlush(scheduleSlot);
         for(SlotLocation slotLocation: slotLocations){
             slotLocation.setSlot(scheduleSlot);
-            slotLocationRepository.saveAndFlush(slotLocation);
+            slotLocationService.saveAndFlush(slotLocation);
         }
         return getScheduleSlotInformation(scheduleSlot.getId());
     }
@@ -355,8 +336,9 @@ public class ScheduleSlotService {
     private Integer getEventStageDuration(EventStage stage, Event event){
         EventStageRestriction restriction = stage.getRestriction();
 
+        //todo: кол-во участников события
         int eventParticipantsCount = 15; //заглушка, нужно кол-во участников события
-        int stationAuditoryCount = locationRepository.findByType(2L).size();
+        int stationAuditoryCount = locationService.getAllByType(2L).size();
 
         //Уникальная длительность для ОПН
         if(stage.getId() == 2L){
@@ -384,12 +366,11 @@ public class ScheduleSlotService {
         List<SlotLocation> slotLocations = new ArrayList<>();
         List<Location> locations;
         List<User> employeeBuffer;
-        List<EventStageLocationRestriction> eventStageLocationRestrictions = eventStageLocationRestrictionRepository
-                .findByEventStageId(stage.getId());
+        List<EventStageLocationRestriction> eventStageLocationRestrictions = eventStageLocationRestrictionService.getByEventStage(stage.getId());
         if(stage.getId() == 3L){
             List<EventStageLocationRestriction> locationRestrictionsBuffer = new ArrayList<>();
             for(EventStageLocationRestriction locationRestriction: eventStageLocationRestrictions){
-                locations = locationRepository.findByTypeAndPeriod(
+                locations = locationService.getFreeByTypeAndPeriod(
                         locationRestriction.getType().getId(),
                         day,
                         startTime,
@@ -404,7 +385,7 @@ public class ScheduleSlotService {
             eventStageLocationRestrictions = locationRestrictionsBuffer;
         }
         for(EventStageLocationRestriction locationRestriction: eventStageLocationRestrictions){
-            locations = locationRepository.findByTypeAndPeriod(
+            locations = locationService.getFreeByTypeAndPeriod(
                     locationRestriction.getType().getId(),
                     day,
                     startTime,
@@ -416,10 +397,10 @@ public class ScheduleSlotService {
                             .location(locations.get(j)).build();
 
                     List<User> employeeForSlotLocation = new ArrayList<>();
-                    List<LocationEmployeeTypeRestriction> locationEmployeeTypeRestrictions = locationEmployeeTypeRestrictionRepository
-                            .findByEventStageLocationRestriction(locationRestriction.getId());
+                    List<LocationEmployeeTypeRestriction> locationEmployeeTypeRestrictions = locationEmployeeTypeRestrictionService
+                            .getByESLR(locationRestriction.getId());
                     for(LocationEmployeeTypeRestriction employeeTypeRestriction: locationEmployeeTypeRestrictions){
-                        employeeBuffer = userRepository.findAllFreeEmployeeByIdAndPeriod(
+                        employeeBuffer = userService.getFreeEmployeesByTypeAndPeriod(
                                 employeeTypeRestriction.getEmployeeType().getId(),
                                 day,
                                 startTime,

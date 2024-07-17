@@ -1,5 +1,7 @@
 package com.rightcode.mtc.services;
 
+import com.rightcode.mtc.dto.user.UserInfoRequest;
+import com.rightcode.mtc.dto.user.UserInfoResponse;
 import com.rightcode.mtc.dto.user.UserRequest;
 import com.rightcode.mtc.dto.user.UserResponse;
 import com.rightcode.mtc.faults.BusinessFault;
@@ -162,5 +164,14 @@ public class UserService {
         if (request.getDob().isEmpty()) {
             throw new BusinessFault("DOB cannot be null or empty", FaultCode.E003.name());
         }
+    }
+
+    public UserInfoResponse getUserInfo(UserInfoRequest request) {
+        Optional<User> userOptional = repository.findById(request.getId());
+        if (userOptional.isEmpty()) {
+            throw new BusinessFault("User not found", FaultCode.E001.name());
+        }
+
+        return mapper.toInfoDto(userOptional.get());
     }
 }

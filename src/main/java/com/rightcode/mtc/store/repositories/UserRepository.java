@@ -57,6 +57,9 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     @Query("select sl.employees from SlotLocation sl where sl.id = :slotLocationId")
     List<User> findBySlotLocation(Long slotLocationId);
+
+    Optional<User> findByUsername(String username);
+
     @Query("SELECT u FROM User u JOIN u.applications ea WHERE ea.event.id = :eventId AND (:eventStatus IS NULL OR ea.status = :eventStatus) ORDER BY ea.dos ASC")
     Page<User> findUsersByEventIdAndStatus(@Param("eventId") Long eventId, @Param("eventStatus") ApplicationStatus eventStatus, Pageable pageable);
 

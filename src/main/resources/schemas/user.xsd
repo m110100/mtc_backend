@@ -6,6 +6,8 @@
 
     <xs:element name="UserRequest" type="tns:UserRequest"/>
     <xs:element name="UserResponse" type="tns:UserResponse"/>
+    <xs:element name="UserInfoRequest" type="tns:UserInfoRequest"/>
+    <xs:element name="UserInfoResponse" type="tns:UserInfoResponse"/>
 
     <xs:complexType name="UserRequest">
         <xs:sequence>
@@ -29,6 +31,24 @@
             <xs:element name="phone" type="xs:string"/>
             <xs:element name="email" type="xs:string"/>
             <xs:element name="dob" type="xs:date"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="UserInfoRequest">
+        <xs:sequence>
+            <xs:element name="id" type="xs:long"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="UserInfoResponse">
+        <xs:sequence>
+            <xs:element name="id" type="xs:long"/>
+            <xs:element name="fullName" type="xs:string"/>
+            <xs:element name="phone" type="xs:string"/>
+            <xs:element name="email" type="xs:string"/>
+            <xs:element name="position" type="xs:string"/>
+            <xs:element name="organization" type="xs:string"/>
+            <xs:element name="speciality" type="xs:string"/>
         </xs:sequence>
     </xs:complexType>
 </xs:schema>

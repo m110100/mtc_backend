@@ -5,6 +5,8 @@
         elementFormDefault="qualified">
     <xs:element name="EventParticipantsRequest" type="tns:EventParticipantsRequest"/>
     <xs:element name="EventParticipantResponse" type="tns:EventParticipantResponse"/>
+    <xs:element name="EventParticipantExcelRequest" type="tns:EventParticipantExcelRequest"/>
+    <xs:element name="EventParticipantExcelResponse" type="tns:EventParticipantExcelResponse"/>
 
     <xs:complexType name="EventParticipantsRequest">
         <xs:sequence>
@@ -56,6 +58,20 @@
         <xs:sequence>
             <xs:element name="updatedAt" type="xs:string"/>
             <xs:element name="nextCursor" type="xs:long"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="EventParticipantExcelRequest">
+        <xs:sequence>
+            <xs:element name="eventId" type="xs:long"/>
+            <xs:element name="eventStatus" type="xs:string" minOccurs="0" nillable="true"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="EventParticipantExcelResponse">
+        <xs:sequence>
+            <xs:element name="fileName" type="xs:string"/>
+            <xs:element name="fileContent" type="xs:base64Binary"/>
         </xs:sequence>
     </xs:complexType>
 </xs:schema>

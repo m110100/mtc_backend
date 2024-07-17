@@ -1,5 +1,7 @@
 package com.rightcode.mtc.endpoints;
 
+import com.rightcode.mtc.dto.eventParticipant.EventParticipantExcelRequest;
+import com.rightcode.mtc.dto.eventParticipant.EventParticipantExcelResponse;
 import com.rightcode.mtc.dto.eventParticipant.EventParticipantResponse;
 import com.rightcode.mtc.dto.eventParticipant.EventParticipantsRequest;
 import com.rightcode.mtc.services.EventParticipantService;
@@ -20,5 +22,11 @@ public class EventParticipantEndpoint {
     @ResponsePayload
     public EventParticipantResponse getEventParticipants(@RequestPayload EventParticipantsRequest request) {
         return service.getEventParticipants(request);
+    }
+
+    @PayloadRoot(namespace = eventParticipantNamespace, localPart = "EventParticipantExcelRequest")
+    @ResponsePayload
+    public EventParticipantExcelResponse getEventParticipantExcel(@RequestPayload EventParticipantExcelRequest request) {
+        return service.getEventParticipantExcel(request);
     }
 }

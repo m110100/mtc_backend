@@ -1,0 +1,225 @@
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns:tns="http://www.rightcode.com/mtc/schedule-slot"
+           targetNamespace="http://www.rightcode.com/mtc/schedule-slot"
+           elementFormDefault="qualified">
+    <xs:element name="getScheduleSlotRequest" type="tns:getScheduleSlotRequest"/>
+    <xs:element name="getScheduleSlotResponse" type="tns:getScheduleSlotResponse"/>
+
+    <xs:complexType name="getScheduleSlotRequest">
+        <xs:sequence>
+            <xs:element name="scheduleSlotId" type="xs:long"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="getScheduleSlotResponse">
+        <xs:sequence>
+            <xs:element name="scheduleSlot" type="tns:scheduleSlotFull"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:element name="changeScheduleSlotStatusRequest" type="tns:changeScheduleSlotStatusRequest"/>
+    <xs:element name="changeScheduleSlotStatusResponse" type="tns:changeScheduleSlotStatusResponse"/>
+
+    <xs:complexType name="changeScheduleSlotStatusRequest">
+        <xs:sequence>
+            <xs:element name="scheduleSlotId" type="xs:long"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="changeScheduleSlotStatusResponse">
+        <xs:sequence>
+            <xs:element name="scheduleSlot" type="tns:scheduleSlotFull"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:element name="addScheduleSlotRequest" type="tns:addScheduleSlotRequest"/>
+
+    <xs:complexType name="addScheduleSlotRequest">
+        <xs:sequence>
+            <xs:element name="eventId" type="xs:long"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:element name="getScheduleSlotListRequest" type="tns:getScheduleSlotListRequest"/>
+    <xs:element name="getScheduleSlotListResponse" type="tns:getScheduleSlotListResponse"/>
+    
+    <xs:complexType name="getScheduleSlotListRequest">
+        <xs:sequence>
+            <xs:element name="pageNumber" type="xs:int"/>
+            <xs:element name="maxPageElementsCount" type="xs:int"/>
+            <xs:element name="scheduleSlotFilterProperties" type="tns:scheduleSlotFilterProperties" nillable="true"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="getScheduleSlotListResponse">
+        <xs:sequence>
+            <xs:element name="scheduleSlot" type="tns:scheduleSlotTrimmed"/>
+            <xs:element name="pageSize" type="xs:int" />
+            <xs:element name="pageNumber" type="xs:int" />
+            <xs:element name="totalPages" type="xs:int" />
+            <xs:element name="totalElements" type="xs:int" />
+            <xs:element name="isFirstPage" type="xs:boolean" />
+            <xs:element name="isLastPage" type="xs:boolean" />
+            <xs:element name="isEmptyPage" type="xs:boolean" />
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:element name="changeScheduleSlotDraftRequest" type="tns:changeScheduleSlotDraftRequest"/>
+
+    <xs:complexType name="changeScheduleSlotDraftRequest">
+        <xs:sequence>
+            <xs:element name="scheduleSlotData" type="tns:scheduleSlotEdit"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="scheduleSlotFilterProperties">
+        <xs:sequence>
+            <xs:element name="eventTypeId" type="xs:long" minOccurs="0"/>
+            <xs:element name="eventStageId" type="xs:long" minOccurs="0"/>
+            <xs:element name="specialityId" type="xs:long" minOccurs="0"/>
+            <xs:element name="employeeId" type="xs:long" minOccurs="0"/>
+            <xs:element name="locationTypeId" type="xs:long" minOccurs="0"/>
+            <xs:element name="locationNumber" type="xs:int" minOccurs="0"/>
+            <xs:element name="startDate" type="xs:string" minOccurs="0"/>
+            <xs:element name="endDate" type="xs:string" minOccurs="0"/>
+            <xs:element name="draft" type="xs:boolean" minOccurs="0"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="scheduleSlotsTrimmed">
+        <xs:sequence>
+            <xs:element name="scheduleSlot" type="tns:scheduleSlotTrimmed" minOccurs="0" maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="scheduleSlotEdit">
+        <xs:sequence>
+            <xs:element name="id" type="xs:long"/>
+            <xs:element name="dop" type="xs:string"/>
+            <xs:element name="startTime" type="xs:string"/>
+            <xs:element name="endTime" type="xs:string"/>
+            <xs:element name="employeeWithoutLocation" type="tns:employeesEdit"/>
+            <xs:element name="slotLocations" type="tns:slotLocationsEdit"/>
+        </xs:sequence>
+    </xs:complexType>
+    
+    <xs:complexType name="scheduleSlotTrimmed">
+        <xs:sequence>
+            <xs:element name="id" type="xs:long"/>
+            <xs:element name="dop" type="xs:string"/>
+            <xs:element name="startTime" type="xs:string"/>
+            <xs:element name="endTime" type="xs:string"/>
+            <xs:element name="draft" type="xs:boolean"/>
+            <xs:element name="stage" type="tns:eventStage"/>
+            <xs:element name="event" type="tns:event"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="scheduleSlotFull">
+        <xs:sequence>
+            <xs:element name="id" type="xs:long"/>
+            <xs:element name="dop" type="xs:string"/>
+            <xs:element name="startTime" type="xs:string"/>
+            <xs:element name="endTime" type="xs:string"/>
+            <xs:element name="draft" type="xs:boolean"/>
+            <xs:element name="stage" type="tns:eventStage"/>
+            <xs:element name="event" type="tns:event"/>
+            <xs:element name="employeesWithoutLocation" type="tns:employees"/>
+            <xs:element name="slotLocations" type="tns:slotLocations"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="eventStage">
+        <xs:sequence>
+            <xs:element name="id" type="xs:long"/>
+            <xs:element name="name" type="xs:string"/>
+            <xs:element name="eventType" type="xs:string"/>
+            <xs:element name="eventCategory" type="xs:string"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="event">
+        <xs:sequence>
+            <xs:element name="id" type="xs:long"/>
+            <xs:element name="startDate" type="xs:string"/>
+            <xs:element name="endDate" type="xs:string"/>
+            <xs:element name="eventType" type="xs:string"/>
+            <xs:element name="medicalSpeciality" type="xs:string"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="employees">
+        <xs:sequence>
+            <xs:element name="employee" type="tns:employee" minOccurs="0" maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="employeesEdit">
+        <xs:sequence>
+            <xs:element name="employeeId" type="xs:long" minOccurs="0" maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="employee">
+        <xs:sequence>
+            <xs:element name="id" type="xs:long"/>
+            <xs:element name="username" type="xs:string"/>
+            <xs:element name="surname" type="xs:string"/>
+            <xs:element name="name" type="xs:string"/>
+            <xs:element name="patronymic" type="xs:string" minOccurs="0"/>
+            <xs:element name="phoneNumber" type="xs:string" minOccurs="0"/>
+            <xs:element name="email" type="xs:string" minOccurs="0"/>
+            <xs:element name="dob" type="xs:string"/>
+            <xs:element name="employeeTypes" type="tns:employeeTypes"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="employeeTypes">
+        <xs:sequence>
+            <xs:element name="type" type="tns:employeeType" minOccurs="0" maxOccurs="4"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="employeeType">
+        <xs:sequence>
+            <xs:element name="id" type="xs:long"/>
+            <xs:element name="name" type="xs:string"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="slotLocations">
+        <xs:sequence>
+            <xs:element name="slotLocation" type="tns:slotLocation" minOccurs="0" maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
+    
+    <xs:complexType name="slotLocationsEdit">
+        <xs:sequence>
+            <xs:element name="slotLocation" type="tns:scheduleSlotEdit"/>
+        </xs:sequence>
+    </xs:complexType>
+    
+    <xs:complexType name="slotLocationEdit">
+        <xs:sequence>
+            <xs:element name="id" type="xs:long" minOccurs="0" nillable="true"/>
+            <xs:element name="locationId" type="xs:long"/>
+            <xs:element name="employees" type="tns:employeesEdit"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="slotLocation">
+        <xs:sequence>
+            <xs:element name="id" type="xs:long"/>
+            <xs:element name="location" type="tns:location"/>
+            <xs:element name="employees" type="tns:employeesEdit"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="location">
+        <xs:sequence>
+            <xs:element name="id" type="xs:long"/>
+            <xs:element name="number" type="xs:int"/>
+            <xs:element name="type" type="xs:string"/>
+        </xs:sequence>
+    </xs:complexType>
+</xs:schema>

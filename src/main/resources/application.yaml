@@ -23,9 +23,16 @@ springdoc:
     enabled: true
 
 cors:
-  allowedOrigins: "http://178.141.253.196:4220, http://localhost:4200/"
-  allowedMethods: "GET, PUT, PATCH, POST, DELETE, OPTIONS"
+  allowedOrigins:
+    - "http://178.141.253.196:4220"
+    - "http://localhost:4200"
+  allowedMethods:
+    - "GET"
+    - "PUT"
+    - "PATCH"
+    - "POST"
+    - "DELETE"
+    - "OPTIONS"
   allowedHeaders: "*"
   allowedCredentials: true
   corsConfiguration: "/*"
-  maxAge: 3600

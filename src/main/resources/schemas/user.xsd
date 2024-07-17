@@ -1,0 +1,34 @@
+<xs:schema
+        xmlns:xs="http://www.w3.org/2001/XMLSchema"
+        xmlns:tns="http://www.rightcode.com/mtc/user"
+        targetNamespace="http://www.rightcode.com/mtc/user"
+        elementFormDefault="qualified">
+
+    <xs:element name="UserRequest" type="tns:UserRequest"/>
+    <xs:element name="UserResponse" type="tns:UserResponse"/>
+
+    <xs:complexType name="UserRequest">
+        <xs:sequence>
+            <xs:element name="surname" type="xs:string"/>
+            <xs:element name="name" type="xs:string"/>
+            <xs:element name="patronymic" type="xs:string"/>
+            <xs:element name="username" type="xs:string"/>
+            <xs:element name="phone" type="xs:string"/>
+            <xs:element name="email" type="xs:string"/>
+            <xs:element name="dob" type="xs:date"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="UserResponse">
+        <xs:sequence>
+            <xs:element name="id" type="xs:long"/>
+            <xs:element name="surname" type="xs:string"/>
+            <xs:element name="name" type="xs:string"/>
+            <xs:element name="patronymic" type="xs:string"/>
+            <xs:element name="username" type="xs:string"/>
+            <xs:element name="phone" type="xs:string"/>
+            <xs:element name="email" type="xs:string"/>
+            <xs:element name="dob" type="xs:date"/>
+        </xs:sequence>
+    </xs:complexType>
+</xs:schema>

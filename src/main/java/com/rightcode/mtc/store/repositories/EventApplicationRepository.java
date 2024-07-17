@@ -30,6 +30,4 @@ public interface EventApplicationRepository extends JpaRepository<EventApplicati
             @Nullable Specification<EventApplication> specification,
             @NonNull Pageable page
     );
-
-
 }

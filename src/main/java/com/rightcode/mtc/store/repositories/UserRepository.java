@@ -65,4 +65,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     @Query("SELECT u FROM User u JOIN u.applications ea WHERE ea.event.id = :eventId AND (:eventStatus IS NULL OR ea.status = :eventStatus) ORDER BY ea.dos ASC")
     List<User> findUsersByEventIdAndStatus(@Param("eventId") Long eventId, @Param("eventStatus") ApplicationStatus eventStatus);
+
+    @Query("select ea.medicalWorker from EventApplication ea where ea.event.id = :eventId and ea.status = 'APPROVED'")
+    List<User> findWorkerByEvent(Long eventId);
 }

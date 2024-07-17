@@ -174,4 +174,8 @@ public class UserService {
 
         return mapper.toInfoDto(userOptional.get());
     }
+
+    public List<User> getEventParticipants(Long eventId){
+        return repository.findWorkerByEvent(eventId);
+    }
 }

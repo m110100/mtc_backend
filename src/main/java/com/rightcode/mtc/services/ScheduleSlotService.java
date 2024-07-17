@@ -336,8 +336,7 @@ public class ScheduleSlotService {
     private Integer getEventStageDuration(EventStage stage, Event event){
         EventStageRestriction restriction = stage.getRestriction();
 
-        //todo: кол-во участников события
-        int eventParticipantsCount = 15; //заглушка, нужно кол-во участников события
+        int eventParticipantsCount = userService.getEventParticipants(event.getId()).size();
         int stationAuditoryCount = locationService.getAllByType(2L).size();
 
         //Уникальная длительность для ОПН

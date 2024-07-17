@@ -1,20 +1,29 @@
 package com.rightcode.mtc.services;
 
+import com.rightcode.mtc.dto.user.UserRequest;
+import com.rightcode.mtc.dto.user.UserResponse;
 import com.rightcode.mtc.faults.BusinessFault;
 import com.rightcode.mtc.faults.FaultCode;
 import com.rightcode.mtc.store.entities.User;
 import com.rightcode.mtc.store.repositories.UserRepository;
+import com.rightcode.mtc.utils.UserMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
+import java.util.Optional;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @Service
 @RequiredArgsConstructor
 public class UserService {
+    private final UserMapper mapper;
+    private static final Pattern PHONE_PATTERN = Pattern.compile("^\\+7 \\(\\d{3}\\) \\d{3}-\\d{2}-\\d{2}$");
     private final UserRepository repository;
 
     public User getMedicalWorkerById(Long medicalWorkerId) {

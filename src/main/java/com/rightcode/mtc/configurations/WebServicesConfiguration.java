@@ -98,6 +98,18 @@ public class WebServicesConfiguration {
         return wsdlDefinition;
     }
 
+    @Bean(name = "medicalPosition")
+    public DefaultWsdl11Definition medicalPositionWsdlDefinition(XsdSchema medicalPositionSchema) {
+        DefaultWsdl11Definition wsdlDefinition = new DefaultWsdl11Definition();
+
+        wsdlDefinition.setPortTypeName("MedicalPositionPort");
+        wsdlDefinition.setLocationUri("/ws/");
+        wsdlDefinition.setTargetNamespace("http://www.rightcode.com/mtc/medical-position");
+        wsdlDefinition.setSchema(medicalPositionSchema);
+
+        return wsdlDefinition;
+    }
+
     @Bean(name = "user")
     public DefaultWsdl11Definition userWsdlDefinition(XsdSchema userSchema) {
         DefaultWsdl11Definition wsdlDefinition = new DefaultWsdl11Definition();
@@ -133,6 +145,11 @@ public class WebServicesConfiguration {
     @Bean(name = "medicalSpecialitySchema")
     public XsdSchema medicalSpecialitySchema() {
         return new SimpleXsdSchema(new ClassPathResource("schemas/medical-speciality.xsd"));
+    }
+
+    @Bean(name = "medicalPositionSchema")
+    public XsdSchema medicalPositionSchema() {
+        return new SimpleXsdSchema(new ClassPathResource("schemas/medical-position.xsd"));
     }
 
     @Bean(name = "medicalOrganizationSchema")

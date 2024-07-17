@@ -16,10 +16,14 @@ import java.util.List;
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "", propOrder = {
         "specialities",
+        "hasNext"
 })
 @XmlRootElement(name = "MedicalSpecialityListResponse", namespace = "http://www.rightcode.com/mtc/medical-speciality")
 public class MedicalSpecialityListResponse implements Serializable {
     @XmlElementWrapper(name = "specialities", namespace = "http://www.rightcode.com/mtc/medical-speciality")
     @XmlElement(name = "speciality", namespace = "http://www.rightcode.com/mtc/medical-speciality")
     private List<MedicalSpecialityResponse> specialities;
+
+    @XmlElement(name = "hasNext", namespace = "http://www.rightcode.com/mtc/medical-speciality")
+    private boolean hasNext;
 }

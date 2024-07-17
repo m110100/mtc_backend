@@ -7,6 +7,8 @@ import com.rightcode.mtc.store.repositories.EventTypeRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class EventTypeService {
@@ -19,5 +21,9 @@ public class EventTypeService {
                         FaultCode.E001.name()
                 )
         );
+    }
+
+    public List<EventType> getAll(){
+        return repository.findAll();
     }
 }

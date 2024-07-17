@@ -1,4 +1,4 @@
-package com.rightcode.mtc.dto.eventApplication;
+package com.rightcode.mtc.dto.event;
 
 import jakarta.xml.bind.annotation.XmlAccessType;
 import jakarta.xml.bind.annotation.XmlAccessorType;
@@ -9,7 +9,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.io.Serializable;
 import java.util.List;
 
 @Getter
@@ -18,13 +17,12 @@ import java.util.List;
 @NoArgsConstructor
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(
-        name = "Applications",
+        name = "",
         propOrder = {
-            "application"
-        },
-        namespace = "http://www.rightcode.com/mtc/event-application"
+                "event"
+        }
 )
-public class Applications implements Serializable {
-    @XmlElement(name = "application", required = true)
-    private List<EventApplicationResponse> application;
+public class Events {
+    @XmlElement(name = "event", namespace = "http://www.rightcode.com/mtc/event")
+    private List<EventResponse> event;
 }

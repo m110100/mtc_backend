@@ -50,6 +50,54 @@ public class WebServicesConfiguration {
         return wsdl11Definition;
     }
 
+    @Bean(name = "event")
+    public DefaultWsdl11Definition eventWsdlDefinition(XsdSchema eventSchema) {
+        DefaultWsdl11Definition wsdlDefinition = new DefaultWsdl11Definition();
+
+        wsdlDefinition.setPortTypeName("EventPort");
+        wsdlDefinition.setLocationUri("/ws/");
+        wsdlDefinition.setTargetNamespace("http://www.rightcode.com/mtc/event");
+        wsdlDefinition.setSchema(eventSchema);
+
+        return wsdlDefinition;
+    }
+
+    @Bean(name = "eventParticipant")
+    public DefaultWsdl11Definition eventParticipantWsdlDefinition(XsdSchema eventParticipantSchema) {
+        DefaultWsdl11Definition wsdlDefinition = new DefaultWsdl11Definition();
+
+        wsdlDefinition.setPortTypeName("EventParticipantPort");
+        wsdlDefinition.setLocationUri("/ws/");
+        wsdlDefinition.setTargetNamespace("http://www.rightcode.com/mtc/event-participant");
+        wsdlDefinition.setSchema(eventParticipantSchema);
+
+        return wsdlDefinition;
+    }
+
+    @Bean(name = "medicalSpeciality")
+    public DefaultWsdl11Definition medicalSpecialityWsdlDefinition(XsdSchema medicalSpecialitySchema) {
+        DefaultWsdl11Definition wsdlDefinition = new DefaultWsdl11Definition();
+
+        wsdlDefinition.setPortTypeName("MedicalSpecialityPort");
+        wsdlDefinition.setLocationUri("/ws/");
+        wsdlDefinition.setTargetNamespace("http://www.rightcode.com/mtc/medical-speciality");
+        wsdlDefinition.setSchema(medicalSpecialitySchema);
+
+        return wsdlDefinition;
+    }
+
+    @Bean(name = "user")
+    public DefaultWsdl11Definition userWsdlDefinition(XsdSchema userSchema) {
+        DefaultWsdl11Definition wsdlDefinition = new DefaultWsdl11Definition();
+
+        wsdlDefinition.setPortTypeName("UserPort");
+        wsdlDefinition.setLocationUri("/ws/");
+        wsdlDefinition.setTargetNamespace("http://www.rightcode.com/mtc/user");
+        wsdlDefinition.setSchema(userSchema);
+
+        return wsdlDefinition;
+    }
+
     @Bean(name = "eventApplicationSchema")
     public XsdSchema eventApplicationSchema() {
         return new SimpleXsdSchema(new ClassPathResource("schemas/event-application.xsd"));
@@ -58,5 +106,25 @@ public class WebServicesConfiguration {
     @Bean(name = "scheduleSlotSchema")
     public XsdSchema scheduleSlotSchema() {
         return new SimpleXsdSchema(new ClassPathResource("schemas/schedule-slot.xsd"));
+    }
+
+    @Bean(name = "eventSchema")
+    public XsdSchema eventSchema() {
+        return new SimpleXsdSchema(new ClassPathResource("schemas/event.xsd"));
+    }
+
+    @Bean(name = "eventParticipantSchema")
+    public XsdSchema eventParticipantSchema() {
+        return new SimpleXsdSchema(new ClassPathResource("schemas/event-participant.xsd"));
+    }
+
+    @Bean(name = "medicalSpecialitySchema")
+    public XsdSchema medicalSpecialitySchema() {
+        return new SimpleXsdSchema(new ClassPathResource("schemas/medical-speciality.xsd"));
+    }
+
+    @Bean(name = "userSchema")
+    public XsdSchema userSchema() {
+        return new SimpleXsdSchema(new ClassPathResource("schemas/user.xsd"));
     }
 }

@@ -18,10 +18,10 @@ public class EventType implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "name", nullable = false)
+    @Column(name = "name", unique = true, nullable = false)
     private String name;
 
-    @Column(name = "acronym", nullable = false)
+    @Column(name = "acronym", unique = true, nullable = false)
     private String acronym;
 
     @OneToMany(mappedBy = "type", fetch = FetchType.LAZY)

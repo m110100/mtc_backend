@@ -1,0 +1,22 @@
+<xs:schema
+    xmlns:xs="http://www.w3.org/2001/XMLSchema"
+    xmlns:tns="http://www.rightcode.com/mtc/authentication"
+    targetNamespace="http://www.rightcode.com/mtc/authentication"
+    elementFormDefault="qualified">
+
+    <xs:element name="AuthenticationRequest" type="tns:AuthenticationRequest"/>
+    <xs:element name="AuthenticationResponse" type="tns:AuthenticationResponse"/>
+
+    <xs:complexType name="AuthenticationRequest">
+        <xs:sequence>
+            <xs:element name="username" type="xs:string"/>
+            <xs:element name="password" type="xs:string"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="AuthenticationResponse">
+        <xs:sequence>
+            <xs:element name="token" type="xs:string"/>
+        </xs:sequence>
+    </xs:complexType>
+</xs:schema>

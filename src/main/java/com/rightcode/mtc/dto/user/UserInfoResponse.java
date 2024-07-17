@@ -38,11 +38,11 @@ public class UserInfoResponse {
     private String email;
 
     @XmlElement(name = "position", namespace = "http://www.rightcode.com/mtc/user", required = true)
-    private String position;
+    private Long position;
 
     @XmlElement(name = "organization", namespace = "http://www.rightcode.com/mtc/user", required = true)
-    private String organization;
+    private Long organization;
 
     @XmlElement(name = "speciality", namespace = "http://www.rightcode.com/mtc/user", required = true)
-    private String speciality;
+    private Long speciality;
 }

@@ -29,9 +29,9 @@ public class UserMapper {
         dto.setFullName(String.format("%s %s %s", user.getSurname(), user.getName(), user.getPatronymic()));
         dto.setPhone(user.getPhoneNumber());
         dto.setEmail(user.getEmail());
-        dto.setPosition(user.getPosition() != null ? user.getPosition().getName() : null);
-        dto.setOrganization(user.getOrganization() != null ? user.getOrganization().getName() : null);
-        dto.setSpeciality(user.getSpeciality() != null ? user.getSpeciality().getName() : null);
+        dto.setPosition(user.getPosition() != null ? user.getPosition().getId() : null);
+        dto.setOrganization(user.getOrganization() != null ? user.getOrganization().getId() : null);
+        dto.setSpeciality(user.getSpeciality() != null ? user.getSpeciality().getId() : null);
 
         return dto;
     }

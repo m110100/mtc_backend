@@ -16,6 +16,8 @@ import java.util.Optional;
 public interface UserRepository extends JpaRepository<User, Long> {
     Optional<User> findByEmail(String email);
 
+    Optional<User> findByUsername(String username);
+
     @Query("SELECT u FROM User u JOIN u.applications ea WHERE ea.event.id = :eventId AND (:eventStatus IS NULL OR ea.status = :eventStatus) ORDER BY ea.dos ASC")
     Page<User> findUsersByEventIdAndStatus(@Param("eventId") Long eventId, @Param("eventStatus") ApplicationStatus eventStatus, Pageable pageable);
 

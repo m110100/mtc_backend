@@ -22,6 +22,6 @@ import lombok.Setter;
 public class FilterEventParticipantsRequest {
     @XmlElement(name = "eventId", namespace = "http://www.rightcode.com/mtc/event-participant")
     private Long eventId;
-    @XmlElement(name = "eventStatus", namespace = "http://www.rightcode.com/mtc/event-participant")
+    @XmlElement(name = "eventStatus", namespace = "http://www.rightcode.com/mtc/event-participant", nillable = true)
     private String eventStatus;
 }

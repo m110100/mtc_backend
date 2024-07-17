@@ -12,14 +12,14 @@ import lombok.Setter;
 @NoArgsConstructor
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(
-        name = "SettingsEventParticipantsRequest",
+        name = "EventParticipantsRequest",
         propOrder = {
             "cursor",
             "filter"
         }
 )
-@XmlRootElement(name = "SettingsEventParticipantsRequest", namespace = "http://www.rightcode.com/mtc/event-participant")
-public class SettingsEventParticipantsRequest {
+@XmlRootElement(name = "EventParticipantsRequest", namespace = "http://www.rightcode.com/mtc/event-participant")
+public class EventParticipantsRequest {
     @XmlElement(name = "cursor", namespace = "http://www.rightcode.com/mtc/event-participant")
     private CursorRequest cursor;
     @XmlElement(name = "filter", namespace = "http://www.rightcode.com/mtc/event-participant")

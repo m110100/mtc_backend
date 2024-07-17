@@ -22,6 +22,6 @@ import lombok.Setter;
 public class CursorRequest {
     @XmlElement(name = "limit", namespace = "http://www.rightcode.com/mtc/event-participant")
     private int limit;
-    @XmlElement(name = "after", namespace = "http://www.rightcode.com/mtc/event-participant")
+    @XmlElement(name = "after", namespace = "http://www.rightcode.com/mtc/event-participant", nillable = true)
     private Long after;
 }

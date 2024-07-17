@@ -3,9 +3,10 @@
         xmlns:tns="http://www.rightcode.com/mtc/event-participant"
         targetNamespace="http://www.rightcode.com/mtc/event-participant"
         elementFormDefault="qualified">
-    <xs:element name="SettingsEventParticipantsRequest" type="tns:SettingsEventParticipantsRequest"/>
+    <xs:element name="EventParticipantsRequest" type="tns:EventParticipantsRequest"/>
+    <xs:element name="EventParticipantResponse" type="tns:EventParticipantResponse"/>
 
-    <xs:complexType name="SettingsEventParticipantsRequest">
+    <xs:complexType name="EventParticipantsRequest">
         <xs:sequence>
             <xs:element name="cursor" type="tns:CursorRequest"/>
             <xs:element name="filter" type="tns:FilterEventParticipantsRequest"/>
@@ -15,14 +16,14 @@
     <xs:complexType name="CursorRequest">
         <xs:sequence>
             <xs:element name="limit" type="xs:int"/>
-            <xs:element name="after" type="xs:long" minOccurs="0"/>
+            <xs:element name="after" type="xs:long" minOccurs="0" nillable="true"/>
         </xs:sequence>
     </xs:complexType>
 
     <xs:complexType name="FilterEventParticipantsRequest">
         <xs:sequence>
             <xs:element name="eventId" type="xs:long" minOccurs="0"/>
-            <xs:element name="eventStatus" type="xs:string" minOccurs="0"/>
+            <xs:element name="eventStatus" type="xs:string" minOccurs="0" nillable="true"/>
         </xs:sequence>
     </xs:complexType>
     

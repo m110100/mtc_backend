@@ -1,9 +1,9 @@
 package com.rightcode.mtc.services;
 
 import com.rightcode.mtc.dto.eventParticipant.EventParticipantResponse;
-import com.rightcode.mtc.dto.eventParticipant.SettingsEventParticipantsRequest;
-import com.rightcode.mtc.dto.eventParticipant.Users;
+import com.rightcode.mtc.dto.eventParticipant.EventParticipantsRequest;
 import com.rightcode.mtc.store.entities.User;
+import com.rightcode.mtc.store.entities.enums.ApplicationStatus;
 import com.rightcode.mtc.store.repositories.UserRepository;
 import com.rightcode.mtc.utils.EventParticipantMapper;
 import lombok.RequiredArgsConstructor;
@@ -18,18 +18,30 @@ public class EventParticipantService {
     private final EventParticipantMapper eventParticipantMapper;
     private final UserRepository repository;
 
-    public Users getEventParticipants(SettingsEventParticipantsRequest request) {
-        Pageable pageable = PageRequest.of(
-                Math.toIntExact(request.getCursor().getAfter()) / request.getCursor().getLimit(),
-                request.getCursor().getLimit()
-        );
+    public EventParticipantResponse getEventParticipants(EventParticipantsRequest request) {
+        long nextCursor;
+        Pageable pageable;
+        if (request.getCursor().getAfter() != null) {
+            pageable = PageRequest.of(
+                    Math.toIntExact(request.getCursor().getAfter()) / request.getCursor().getLimit(),
+                    request.getCursor().getLimit()
+            );
+            nextCursor = request.getCursor().getAfter() + request.getCursor().getLimit();
+        } else {
+            pageable = PageRequest.of(0, request.getCursor().getLimit());
+            nextCursor = request.getCursor().getLimit();
+        }
+
+        ApplicationStatus status = request.getFilter().getEventStatus() != null
+                ? ApplicationStatus.valueOf(request.getFilter().getEventStatus())
+                : null;
 
         Page<User> page = repository.findUsersByEventIdAndStatus(
                 request.getFilter().getEventId(),
-                request.getFilter().getEventStatus(),
+                status,
                 pageable
         );
 
-        return eventParticipantMapper.toListDto(page);
+        return eventParticipantMapper.toResponse(page, nextCursor);
     }
 }

@@ -1,11 +1,15 @@
 package com.rightcode.mtc.utils;
 
+import com.rightcode.mtc.dto.eventParticipant.CursorResult;
+import com.rightcode.mtc.dto.eventParticipant.EventParticipantResponse;
 import com.rightcode.mtc.dto.eventParticipant.UserDTO;
 import com.rightcode.mtc.dto.eventParticipant.Users;
 import com.rightcode.mtc.store.entities.User;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -35,5 +39,14 @@ public class EventParticipantMapper {
                                      .collect(Collectors.toList());
 
         return new Users(userDtos);
+    }
+
+    public EventParticipantResponse toResponse(Page<User> page, long nextCursor) {
+        LocalDateTime now = LocalDateTime.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        String formattedDateTime = now.format(formatter);
+        CursorResult cursorResult = new CursorResult(formattedDateTime , nextCursor);
+        Users users = toListDto(page);
+        return new EventParticipantResponse(users, cursorResult);
     }
 }

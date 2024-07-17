@@ -1,8 +1,7 @@
 package com.rightcode.mtc.endpoints;
 
 import com.rightcode.mtc.dto.eventParticipant.EventParticipantResponse;
-import com.rightcode.mtc.dto.eventParticipant.SettingsEventParticipantsRequest;
-import com.rightcode.mtc.dto.eventParticipant.Users;
+import com.rightcode.mtc.dto.eventParticipant.EventParticipantsRequest;
 import com.rightcode.mtc.services.EventParticipantService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.ws.server.endpoint.annotation.Endpoint;
@@ -17,9 +16,9 @@ public class EventParticipantEndpoint {
 
     private final EventParticipantService service;
 
-    @PayloadRoot(namespace = eventParticipantNamespace, localPart = "SettingsEventParticipantsRequest")
+    @PayloadRoot(namespace = eventParticipantNamespace, localPart = "EventParticipantsRequest")
     @ResponsePayload
-    public Users getEventParticipants(@RequestPayload SettingsEventParticipantsRequest request) {
+    public EventParticipantResponse getEventParticipants(@RequestPayload EventParticipantsRequest request) {
         return service.getEventParticipants(request);
     }
 }

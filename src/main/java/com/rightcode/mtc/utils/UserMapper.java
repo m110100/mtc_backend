@@ -15,10 +15,24 @@ public class UserMapper {
         dto.setUsername(entity.getUsername());
         dto.setSurname(entity.getSurname());
         dto.setName(entity.getName());
-        dto.setPatronymic(entity.getPatronymic());
+        if (entity.getPatronymic() != null) {
+            dto.setPatronymic(entity.getPatronymic());
+        }
         dto.setPhone(entity.getPhoneNumber());
         dto.setEmail(entity.getEmail());
         dto.setDob(entity.getDob().toString());
+
+        if (entity.getPosition() != null) {
+            dto.setPosition(entity.getPosition().getId());
+        }
+
+        if (entity.getOrganization() != null) {
+            dto.setOrganization(entity.getOrganization().getId());
+        }
+
+        if (entity.getSpeciality() != null) {
+            dto.setSpeciality(entity.getSpeciality().getId());
+        }
 
         return dto;
     }

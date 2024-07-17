@@ -2,6 +2,8 @@ package com.rightcode.mtc.services;
 
 import com.rightcode.mtc.dto.eventParticipant.EventParticipantResponse;
 import com.rightcode.mtc.dto.eventParticipant.EventParticipantsRequest;
+import com.rightcode.mtc.faults.BusinessFault;
+import com.rightcode.mtc.faults.FaultCode;
 import com.rightcode.mtc.store.entities.User;
 import com.rightcode.mtc.store.entities.enums.ApplicationStatus;
 import com.rightcode.mtc.store.repositories.UserRepository;
@@ -32,9 +34,14 @@ public class EventParticipantService {
             nextCursor = request.getCursor().getLimit();
         }
 
-        ApplicationStatus status = request.getFilter().getEventStatus() != null
-                ? ApplicationStatus.valueOf(request.getFilter().getEventStatus())
-                : null;
+        ApplicationStatus status = null;
+        if (request.getFilter().getEventStatus() != null && !request.getFilter().getEventStatus().isEmpty()) {
+            try {
+                status = ApplicationStatus.valueOf(request.getFilter().getEventStatus());
+            } catch (IllegalArgumentException e) {
+                throw new BusinessFault("Invalid event status: " + request.getFilter().getEventStatus(), FaultCode.E003.name());
+            }
+        }
 
         Page<User> page = repository.findUsersByEventIdAndStatus(
                 request.getFilter().getEventId(),

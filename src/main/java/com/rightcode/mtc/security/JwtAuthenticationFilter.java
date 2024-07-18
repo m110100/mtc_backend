@@ -18,9 +18,11 @@ import java.text.ParseException;
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private final UserDetailsService userDetailsService;
+    private final JwtUtil jwtUtil;
 
-    public JwtAuthenticationFilter(UserDetailsService userDetailsService) {
+    public JwtAuthenticationFilter(UserDetailsService userDetailsService, JwtUtil jwtUtil) {
         this.userDetailsService = userDetailsService;
+        this.jwtUtil = jwtUtil;
     }
 
     @Override
@@ -34,7 +36,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
             jwt = authorizationHeader.substring(7);
             try {
-                username = JwtUtil.validateToken(jwt);
+                username = jwtUtil.validateToken(jwt);
             } catch (Exception e) {
                 throw new ServletException("Invalid token", e);
             }
@@ -43,7 +45,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
             UserDetails userDetails = this.userDetailsService.loadUserByUsername(username);
             try {
-                if (JwtUtil.validateToken(jwt).equals(userDetails.getUsername())) {
+                if (jwtUtil.validateToken(jwt).equals(userDetails.getUsername())) {
                     UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken =
                             new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
                     usernamePasswordAuthenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));

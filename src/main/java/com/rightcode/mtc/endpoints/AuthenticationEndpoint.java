@@ -3,7 +3,8 @@ package com.rightcode.mtc.endpoints;
 import com.rightcode.mtc.dto.authentication.AuthenticationRequest;
 import com.rightcode.mtc.dto.authentication.AuthenticationResponse;
 import com.rightcode.mtc.security.JwtUtil;
-import com.rightcode.mtc.security.CustomUserDetailsService;
+import com.rightcode.mtc.store.entities.User;
+import com.rightcode.mtc.store.repositories.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -21,7 +22,8 @@ public class AuthenticationEndpoint {
     private static final String NAMESPACE_URI = "http://www.rightcode.com/mtc/authentication";
 
     private final AuthenticationManager authenticationManager;
-    private final CustomUserDetailsService userDetailsService;
+    private final JwtUtil jwtUtil;
+    private final UserRepository userRepository;
 
     @PayloadRoot(namespace = NAMESPACE_URI, localPart = "AuthenticationRequest")
     @ResponsePayload
@@ -31,7 +33,10 @@ public class AuthenticationEndpoint {
                     new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword())
             );
 
-            String token = JwtUtil.generateToken(authentication.getName());
+            User user = userRepository.findByUsername(request.getUsername())
+                    .orElseThrow(() -> new Exception("User not found"));
+
+            String token = jwtUtil.generateToken(user);
             AuthenticationResponse response = new AuthenticationResponse();
             response.setToken(token);
             return response;

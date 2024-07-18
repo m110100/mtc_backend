@@ -15,13 +15,6 @@ spring:
   liquibase:
     change-log: classpath:db/changelog/changelog-master.xml
 
-springdoc:
-  api-docs:
-    path: /api-docs
-  swagger-ui:
-    path: /swagger-ui.html
-    enabled: true
-
 cors:
   allowedOrigins:
     - "http://178.141.253.196:4220"

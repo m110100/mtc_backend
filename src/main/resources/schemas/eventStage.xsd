@@ -1,0 +1,31 @@
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns:tns="http://www.rightcode.com/mtc/event-stage"
+           targetNamespace="http://www.rightcode.com/mtc/event-stage"
+           elementFormDefault="qualified">
+    <xs:element name="getEventStageListRequest" type="tns:getEventStageListRequest"/>
+    <xs:element name="getEventStageListResponse" type="tns:getEventStageListResponse"/>
+
+    <xs:complexType name="getEventStageListRequest">
+        <xs:sequence/>
+    </xs:complexType>
+    <xs:complexType name="getEventStageListResponse">
+        <xs:sequence>
+            <xs:element name="eventStages" type="tns:eventStages"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="eventStages">
+        <xs:sequence>
+            <xs:element name="stage" type="tns:eventStage" minOccurs="0" maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="eventStage">
+        <xs:sequence>
+            <xs:element name="id" type="xs:long"/>
+            <xs:element name="name" type="xs:string"/>
+            <xs:element name="eventType" type="xs:string"/>
+            <xs:element name="stageCategory" type="xs:string"/>
+        </xs:sequence>
+    </xs:complexType>
+</xs:schema>

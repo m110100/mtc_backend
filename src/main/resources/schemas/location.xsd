@@ -1,0 +1,55 @@
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns:tns="http://www.rightcode.com/mtc/location"
+           targetNamespace="http://www.rightcode.com/mtc/location"
+           elementFormDefault="qualified">
+    <xs:element name="getLocationListRequest" type="tns:getLocationListRequest"/>
+    <xs:element name="getLocationListResponse" type="tns:getLocationListResponse"/>
+
+    <xs:complexType name="getLocationListRequest">
+        <xs:sequence/>
+    </xs:complexType>
+    <xs:complexType name="getLocationListResponse">
+        <xs:sequence>
+            <xs:element name="locations" type="tns:locations"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:element name="getLocationTypeListRequest" type="tns:getLocationTypeListRequest"/>
+    <xs:element name="getLocationTypeListResponse" type="tns:getLocationTypeListResponse"/>
+
+    <xs:complexType name="getLocationTypeListRequest">
+        <xs:sequence/>
+    </xs:complexType>
+    <xs:complexType name="getLocationTypeListResponse">
+        <xs:sequence>
+            <xs:element name="locationTypes" type="tns:locationTypes"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="locations">
+        <xs:sequence>
+            <xs:element name="location" type="tns:location" minOccurs="0" maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="locationTypes">
+        <xs:sequence>
+            <xs:element name="type" type="tns:locationType" maxOccurs="unbounded" minOccurs="0"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="location">
+        <xs:sequence>
+            <xs:element name="id" type="xs:long"/>
+            <xs:element name="number" type="xs:int"/>
+            <xs:element name="type" type="tns:locationType"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="locationType">
+        <xs:sequence>
+            <xs:element name="id" type="xs:long"/>
+            <xs:element name="name" type="xs:string"/>
+        </xs:sequence>
+    </xs:complexType>
+</xs:schema>

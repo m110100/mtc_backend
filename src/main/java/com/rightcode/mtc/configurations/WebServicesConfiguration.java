@@ -174,6 +174,30 @@ public class WebServicesConfiguration {
         return wsdl11Definition;
     }
 
+    @Bean(name = "location")
+    public DefaultWsdl11Definition locationWsdl11Definition(XsdSchema locationSchema){
+        DefaultWsdl11Definition wsdl11Definition = new DefaultWsdl11Definition();
+
+        wsdl11Definition .setPortTypeName("LocationPort");
+        wsdl11Definition.setLocationUri("/ws/");
+        wsdl11Definition.setTargetNamespace("http://www.rightcode.com/mtc/location");
+        wsdl11Definition.setSchema(locationSchema);
+
+        return wsdl11Definition;
+    }
+
+    @Bean(name = "eventStage")
+    public DefaultWsdl11Definition eventStageWsdl11Definition(XsdSchema eventStageSchema){
+        DefaultWsdl11Definition wsdl11Definition = new DefaultWsdl11Definition();
+
+        wsdl11Definition.setPortTypeName("EventStagePort");
+        wsdl11Definition.setLocationUri("/ws/");
+        wsdl11Definition.setTargetNamespace("http://www.rightcode.com/mtc/event-stage");
+        wsdl11Definition.setSchema(eventStageSchema);
+
+        return wsdl11Definition;
+    }
+
     @Bean(name = "eventApplicationSchema")
     public XsdSchema eventApplicationSchema() {
         return new SimpleXsdSchema(new ClassPathResource("schemas/event-application.xsd"));
@@ -222,5 +246,15 @@ public class WebServicesConfiguration {
     @Bean(name = "authenticationSchema")
     public XsdSchema authenticationSchema() {
         return new SimpleXsdSchema(new ClassPathResource("schemas/authentication.xsd"));
+    }
+
+    @Bean(name = "locationSchema")
+    public XsdSchema locationSchema(){
+        return new SimpleXsdSchema(new ClassPathResource("schemas/location.xsd"));
+    }
+
+    @Bean(name = "eventStageSchema")
+    public XsdSchema eventStageSchema(){
+        return new SimpleXsdSchema(new ClassPathResource("schemas/eventStage.xsd"));
     }
 }

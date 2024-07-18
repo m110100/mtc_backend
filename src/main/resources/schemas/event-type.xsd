@@ -1,0 +1,31 @@
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns:tns="http://www.rightcode.com/mtc/event-type"
+           targetNamespace="http://www.rightcode.com/mtc/event-type"
+           elementFormDefault="qualified">
+    <xs:element name="getEventTypeRequest" type="tns:getEventTypeRequest"/>
+    <xs:element name="getEventTypeResponse" type="tns:getEventTypesResponse"/>
+
+    <xs:complexType name="getEventTypeRequest">
+        <xs:sequence/>
+    </xs:complexType>
+
+    <xs:complexType name="getEventTypesResponse">
+        <xs:sequence>
+            <xs:element name="eventTypes" type="tns:eventTypes"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="eventTypes">
+        <xs:sequence>
+            <xs:element name="eventType" type="tns:eventType" minOccurs="0" maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="eventType">
+        <xs:sequence>
+            <xs:element name="id" type="xs:long"/>
+            <xs:element name="name" type="xs:string"/>
+            <xs:element name="acronym" type="xs:string"/>
+        </xs:sequence>
+    </xs:complexType>
+</xs:schema>

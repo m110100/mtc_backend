@@ -1,6 +1,7 @@
 package com.rightcode.mtc.store.repositories;
 
 import com.rightcode.mtc.store.entities.MedicalSpeciality;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -19,5 +20,5 @@ public interface MedicalSpecialityRepository extends JpaRepository<MedicalSpecia
 //    Slice<MedicalSpeciality> findMedicalSpecialitiesByName(String name, Pageable pageable);
     @Query("select ms from MedicalSpeciality ms " +
             "where lower(ms.name) like lower(concat('%', :name, '%'))")
-    List<MedicalSpeciality> findMedicalSpecialitiesByName(String name);
+    Page<MedicalSpeciality> findMedicalSpecialitiesByName(String name, Pageable pageable);
 }

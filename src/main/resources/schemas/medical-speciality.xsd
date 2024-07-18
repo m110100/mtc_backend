@@ -21,6 +21,7 @@
                     </xs:sequence>
                 </xs:complexType>
             </xs:element>
+            <xs:element name="hasNext" type="xs:boolean" />
         </xs:sequence>
     </xs:complexType>
 

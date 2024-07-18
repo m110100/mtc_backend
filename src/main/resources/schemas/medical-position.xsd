@@ -1,0 +1,34 @@
+<xs:schema
+        xmlns:xs="http://www.w3.org/2001/XMLSchema"
+        xmlns:tns="http://www.rightcode.com/mtc/medical-position"
+        targetNamespace="http://www.rightcode.com/mtc/medical-position"
+        elementFormDefault="qualified">
+    <xs:element name="MedicalPositionListRequest" type="tns:MedicalPositionListRequest" />
+    <xs:element name="MedicalPositionListResponse" type="tns:MedicalPositionListResponse" />
+
+    <xs:complexType name="MedicalPositionListRequest">
+        <xs:sequence>
+            <xs:element name="name" type="xs:string" />
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="MedicalPositionListResponse">
+        <xs:sequence>
+            <xs:element name="positions">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="position" type="tns:MedicalPositionResponse" minOccurs="0" maxOccurs="10" />
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="hasNext" type="xs:boolean" />
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="MedicalPositionResponse">
+        <xs:sequence>
+            <xs:element name="id" type="xs:long" />
+            <xs:element name="name" type="xs:string" />
+        </xs:sequence>
+    </xs:complexType>
+</xs:schema>

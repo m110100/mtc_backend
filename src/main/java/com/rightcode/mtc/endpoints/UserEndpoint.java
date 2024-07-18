@@ -1,5 +1,7 @@
 package com.rightcode.mtc.endpoints;
 
+import com.rightcode.mtc.dto.user.UserInfoRequest;
+import com.rightcode.mtc.dto.user.UserInfoResponse;
 import com.rightcode.mtc.dto.user.UserRequest;
 import com.rightcode.mtc.dto.user.UserResponse;
 import com.rightcode.mtc.services.UserService;
@@ -19,5 +21,11 @@ public class UserEndpoint {
     @ResponsePayload
     public UserResponse updateUser(@RequestPayload UserRequest request) {
         return service.updateUser(request);
+    }
+
+    @PayloadRoot(namespace = userNamespace, localPart = "UserInfoRequest")
+    @ResponsePayload
+    public UserInfoResponse getUserInfo(@RequestPayload UserInfoRequest request) {
+        return service.getUserInfo(request);
     }
 }

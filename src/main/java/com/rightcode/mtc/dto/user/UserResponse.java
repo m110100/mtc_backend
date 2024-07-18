@@ -21,7 +21,10 @@ import lombok.Setter;
             "username",
             "phone",
             "email",
-            "dob"
+            "dob",
+            "position",
+            "organization",
+            "speciality"
         }
 )
 @XmlRootElement(name = "UserResponse", namespace = "http://www.rightcode.com/mtc/user")
@@ -42,5 +45,10 @@ public class UserResponse {
     private String email;
     @XmlElement(name = "dob", namespace = "http://www.rightcode.com/mtc/user", required = true)
     private String dob;
+    @XmlElement(name = "position", namespace = "http://www.rightcode.com/mtc/user", required = true)
+    private Long position;
+    @XmlElement(name = "organization", namespace = "http://www.rightcode.com/mtc/user", required = true)
+    private Long organization;
+    @XmlElement(name = "speciality", namespace = "http://www.rightcode.com/mtc/user", required = true)
+    private Long speciality;
 }
-

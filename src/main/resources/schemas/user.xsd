@@ -6,16 +6,21 @@
 
     <xs:element name="UserRequest" type="tns:UserRequest"/>
     <xs:element name="UserResponse" type="tns:UserResponse"/>
+    <xs:element name="UserInfoRequest" type="tns:UserInfoRequest"/>
+    <xs:element name="UserInfoResponse" type="tns:UserInfoResponse"/>
 
     <xs:complexType name="UserRequest">
         <xs:sequence>
-            <xs:element name="surname" type="xs:string"/>
-            <xs:element name="name" type="xs:string"/>
-            <xs:element name="patronymic" type="xs:string"/>
-            <xs:element name="username" type="xs:string"/>
-            <xs:element name="phone" type="xs:string"/>
-            <xs:element name="email" type="xs:string"/>
-            <xs:element name="dob" type="xs:date"/>
+            <xs:element name="surname" type="xs:string" minOccurs="0"/>
+            <xs:element name="name" type="xs:string" minOccurs="0"/>
+            <xs:element name="patronymic" type="xs:string" minOccurs="0" nillable="true"/>
+            <xs:element name="username" type="xs:string" minOccurs="1"/>
+            <xs:element name="phone" type="xs:string" minOccurs="0"/>
+            <xs:element name="email" type="xs:string" minOccurs="0"/>
+            <xs:element name="dob" type="xs:string" minOccurs="0"/>
+            <xs:element name="position" type="xs:long" minOccurs="0"/>
+            <xs:element name="organization" type="xs:long" minOccurs="0"/>
+            <xs:element name="speciality" type="xs:long" minOccurs="0"/>
         </xs:sequence>
     </xs:complexType>
 
@@ -28,7 +33,28 @@
             <xs:element name="username" type="xs:string"/>
             <xs:element name="phone" type="xs:string"/>
             <xs:element name="email" type="xs:string"/>
-            <xs:element name="dob" type="xs:date"/>
+            <xs:element name="dob" type="xs:string"/>
+            <xs:element name="position" type="xs:long"/>
+            <xs:element name="organization" type="xs:long"/>
+            <xs:element name="speciality" type="xs:long"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="UserInfoRequest">
+        <xs:sequence>
+            <xs:element name="id" type="xs:long"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="UserInfoResponse">
+        <xs:sequence>
+            <xs:element name="id" type="xs:long"/>
+            <xs:element name="fullName" type="xs:string"/>
+            <xs:element name="phone" type="xs:string"/>
+            <xs:element name="email" type="xs:string"/>
+            <xs:element name="position" type="xs:long"/>
+            <xs:element name="organization" type="xs:long"/>
+            <xs:element name="speciality" type="xs:long"/>
         </xs:sequence>
     </xs:complexType>
 </xs:schema>

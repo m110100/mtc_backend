@@ -33,7 +33,7 @@ public class UserService {
 
     @Transactional
     public UserResponse updateUser(UserRequest request) {
-        Optional<User> userOptional = repository.findByEmail(request.getEmail());
+        Optional<User> userOptional = repository.findByUsername(request.getUsername());
         if (userOptional.isEmpty()) {
             throw new BusinessFault("User not found", FaultCode.E001.name());
         }

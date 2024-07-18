@@ -23,7 +23,7 @@ public class WebServicesConfiguration {
         servlet.setApplicationContext(context);
         servlet.setTransformWsdlLocations(true);
 
-        return new ServletRegistrationBean<>(servlet, "/ws/*");
+        return new ServletRegistrationBean<>(servlet, "/ws/*", "/auth/*");
     }
 
     @Bean(name = "eventApplication")
@@ -86,6 +86,18 @@ public class WebServicesConfiguration {
         return wsdlDefinition;
     }
 
+    @Bean(name = "auth")
+    public DefaultWsdl11Definition authenticationWsdlDefinition(XsdSchema authenticationSchema) {
+        DefaultWsdl11Definition wsdlDefinition = new DefaultWsdl11Definition();
+
+        wsdlDefinition.setPortTypeName("AuthenticationPort");
+        wsdlDefinition.setLocationUri("/auth");
+        wsdlDefinition.setTargetNamespace("http://www.rightcode.com/mtc/authentication");
+        wsdlDefinition.setSchema(authenticationSchema);
+
+        return wsdlDefinition;
+    }
+
     @Bean(name = "eventApplicationSchema")
     public XsdSchema eventApplicationSchema() {
         return new SimpleXsdSchema(new ClassPathResource("schemas/event-application.xsd"));
@@ -109,5 +121,10 @@ public class WebServicesConfiguration {
     @Bean(name = "userSchema")
     public XsdSchema userSchema() {
         return new SimpleXsdSchema(new ClassPathResource("schemas/user.xsd"));
+    }
+
+    @Bean(name = "authenticationSchema")
+    public XsdSchema authenticationSchema() {
+        return new SimpleXsdSchema(new ClassPathResource("schemas/authentication.xsd"));
     }
 }

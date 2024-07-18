@@ -8,7 +8,7 @@ import java.util.Date;
 
 public class JwtUtil {
 
-    private static final String SECRET = "your-256-bit-secret";
+    private static final String SECRET = "I+dcmDnXRs6uEsssfSg+q+9rR64b4rgiSiGprDGEnVE=";
 
     public static String generateToken(String username) throws JOSEException {
         JWSSigner signer = new MACSigner(SECRET);
